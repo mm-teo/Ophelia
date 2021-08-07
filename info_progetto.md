@@ -1,7 +1,7 @@
 # Setup
 Nesessario per fare partire il comando roslaunch
 
-`source devel/setup.bash`
+`source ophelia/devel/setup.bash`
 
 ## Necessario per la prima esecuzione
 

@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: ophelia_description
+    relative_path: urdf/ophelia_description.urdf
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/ophelia_description.srdf
+  CONFIG:
+    author_name: teo_monfrini
+    author_email: teo@m.com
+    generated_timestamp: 1603794472
