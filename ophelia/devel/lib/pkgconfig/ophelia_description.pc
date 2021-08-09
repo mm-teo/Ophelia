@@ -1,8 +1,0 @@
-prefix=/home/teo/ophelia/devel
-
-Name: ophelia_description
-Description: Description of ophelia_description
-Version: 1.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

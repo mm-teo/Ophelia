@@ -1,2 +1,0 @@
-hls_lfcd_lds_driver-master:moveit_ophelia:ophelia_description
--DCATKIN_DEVEL_PREFIX=/home/teo/ophelia/devel -DCMAKE_INSTALL_PREFIX=/home/teo/ophelia/install -G Unix Makefiles
