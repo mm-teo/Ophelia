@@ -1,16 +1,6 @@
 # Ophelia
 This project is about a 18DOF Hexapode driven by Raspberry 4 Model B 4GB RAM, 18 MG996r high torque servomotors. I decided to adopt a ROS environment because in the future it could become a bigger project without painfull or impossible modify.
 
-# Software requirements
-
-Operating System: Ubutnu 18.04\
-ROS: Melodic
-
-## ROS packeges
-
-[rrt_exploration](http://wiki.ros.org/rrt_exploration)\
-[gmapping](http://wiki.ros.org/gmapping)
-
 # Build
 ```
 cd ophelia
