@@ -1,13 +1,11 @@
 #! /usr/bin/env python
 
-import time
 import rospy
 import math
 from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
 from std_msgs.msg import String
 from std_msgs.msg import Header
-from pynput import keyboard
 
 
 class Movement:
@@ -89,9 +87,9 @@ class Movement:
                 Movement.sx_f_3 = -Movement.dx_f_2
                 Movement.sx_t_3 = -Movement.dx_t_2
 
-                ophelia.moving()
+                self.moving()
                 Movement.z3 = Movement.z3+1
-                ophelia.pubb()
+                self.pubb()
 
         Movement.firstStep = 0
         Movement.z1 = Movement.z3
@@ -149,14 +147,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z2)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y-1
             Movement.x1 = Movement.x1-(1/math.sqrt(2))
             Movement.x2 = Movement.x2+(1/math.sqrt(2))
             Movement.y1 = -Movement.x1+135
             Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
             Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.y < 40:
             # destra destri a=anca, f=femore, t=tibia
@@ -210,14 +208,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y+1
             Movement.x1 = Movement.x1+(1/math.sqrt(2))
             Movement.x2 = Movement.x2-(1/math.sqrt(2))
             Movement.y1 = -Movement.x1+135
             Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
             Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            ophelia.pubb()
+            self.pubb()
 
     def avantiUscita(self):
         Movement.firstStep = 1
@@ -273,14 +271,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z2)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y-1
             Movement.x1 = Movement.x1-(1/math.sqrt(2))
             Movement.x2 = Movement.x2+(1/math.sqrt(2))
             Movement.y1 = -Movement.x1+135
             Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
             Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.z2 > -130:
             # d=right a=coxa, f=femur, t=tibia
@@ -299,9 +297,9 @@ class Movement:
             Movement.sx_f_3 = -Movement.dx_f_2
             Movement.sx_t_3 = -Movement.dx_t_2
 
-            ophelia.moving()
+            self.moving()
             Movement.z2 = Movement.z2-1
-            ophelia.pubb()
+            self.pubb()
 
     def indietro(self):
         Movement.z3 = Movement.z
@@ -323,9 +321,9 @@ class Movement:
                 Movement.sx_f_3 = -Movement.dx_f_2
                 Movement.sx_t_3 = -Movement.dx_t_2
 
-                ophelia.moving()
+                self.moving()
                 Movement.z3 = Movement.z3+1
-                ophelia.pubb()
+                self.pubb()
 
         Movement.firstStep = 0
         Movement.z1 = Movement.z3
@@ -383,14 +381,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z2)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y-1
             Movement.x1 = Movement.x1+(1/math.sqrt(2))
             Movement.x2 = Movement.x2-(1/math.sqrt(2))
             Movement.y1 = -Movement.x1+135
             Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
             Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.y < 40:
             # destra destri a=anca, f=femore, t=tibia
@@ -444,14 +442,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y+1
             Movement.x1 = Movement.x1-(1/math.sqrt(2))
             Movement.x2 = Movement.x2+(1/math.sqrt(2))
             Movement.y1 = -Movement.x1+135
             Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
             Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            ophelia.pubb()
+            self.pubb()
 
     def indietroUscita(self):
         Movement.firstStep = 1
@@ -507,14 +505,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z2)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y-1
             Movement.x1 = Movement.x1+(1/math.sqrt(2))
             Movement.x2 = Movement.x2-(1/math.sqrt(2))
             Movement.y1 = -Movement.x1+135
             Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
             Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.z2 > -130:
             # d=right a=coxa, f=femur, t=tibia
@@ -533,9 +531,9 @@ class Movement:
             Movement.sx_f_3 = -Movement.dx_f_2
             Movement.sx_t_3 = -Movement.dx_t_2
 
-            ophelia.moving()
+            self.moving()
             Movement.z2 = Movement.z2-1
-            ophelia.pubb()
+            self.pubb()
 
     def alza(self):
         while Movement.z > -130:
@@ -567,9 +565,9 @@ class Movement:
             Movement.sx_f_3 = -Movement.dx_f_1
             Movement.sx_t_3 = -Movement.dx_t_1
 
-            ophelia.moving()
+            self.moving()
             Movement.z = Movement.z-1
-            ophelia.pubb()
+            self.pubb()
 
     def destra(self):
         Movement.z3 = Movement.z
@@ -591,9 +589,9 @@ class Movement:
                 Movement.sx_f_3 = -Movement.dx_f_2
                 Movement.sx_t_3 = -Movement.dx_t_2
 
-                ophelia.moving()
+                self.moving()
                 Movement.z3 = Movement.z3+1
-                ophelia.pubb()
+                self.pubb()
 
         Movement.firstStep = 0
         Movement.z1 = Movement.z3
@@ -651,14 +649,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     Movement.x2, -Movement.y1, Movement.z1)
 
-            ophelia.moving()
+            self.moving()
             Movement.x = Movement.x-1
             Movement.x1 = Movement.x1+1
             Movement.z1 = -(Movement.x*Movement.x *
                             0.01875+441.7-5.065*Movement.x)
             Movement.x2 = Movement.x2-(1/math.sqrt(2))
             Movement.y1 = Movement.y1-(1/math.sqrt(2))
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.x < 175:
             # destra destri a=anca, f=femore, t=tibia
@@ -712,14 +710,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     Movement.x2, -Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.x = Movement.x+1
             Movement.x1 = Movement.x1-1
             Movement.z1 = -(Movement.x*Movement.x *
                             0.01875+441.7-5.065*Movement.x)
             Movement.x2 = Movement.x2+(1/math.sqrt(2))
             Movement.y1 = Movement.y1+(1/math.sqrt(2))
-            ophelia.pubb()
+            self.pubb()
 
     def destraUscita(self):
         while Movement.x > 135:
@@ -774,14 +772,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     Movement.x2, -Movement.y1, Movement.z1)
 
-            ophelia.moving()
+            self.moving()
             Movement.x = Movement.x-1
             Movement.x1 = Movement.x1+1
             Movement.z1 = -(Movement.x*Movement.x *
                             0.01875+441.7-5.065*Movement.x)
             Movement.x2 = Movement.x2-(1/math.sqrt(2))
             Movement.y1 = Movement.y1-(1/math.sqrt(2))
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.z2 > -130:
             # d=right a=coxa, f=femur, t=tibia
@@ -800,9 +798,9 @@ class Movement:
             Movement.sx_f_3 = -Movement.dx_f_2
             Movement.sx_t_3 = -Movement.dx_t_2
 
-            ophelia.moving()
+            self.moving()
             Movement.z2 = Movement.z2-1
-            ophelia.pubb()
+            self.pubb()
 
     def sinistra(self):
         Movement.z3 = Movement.z
@@ -824,9 +822,9 @@ class Movement:
                 Movement.sx_f_3 = -Movement.dx_f_2
                 Movement.sx_t_3 = -Movement.dx_t_2
 
-                ophelia.moving()
+                self.moving()
                 Movement.z3 = Movement.z3+1
-                ophelia.pubb()
+                self.pubb()
 
         Movement.firstStep = 0
         Movement.z1 = Movement.z3
@@ -884,14 +882,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     Movement.x2, -Movement.y1, Movement.z1)
 
-            ophelia.moving()
+            self.moving()
             Movement.x = Movement.x+1
             Movement.x1 = Movement.x1-1
             Movement.z1 = -(Movement.x*Movement.x *
                             0.01875+441.7-5.065*Movement.x)
             Movement.x2 = Movement.x2+(1/math.sqrt(2))
             Movement.y1 = Movement.y1+(1/math.sqrt(2))
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.x > 95:
             # destra destri a=anca, f=femore, t=tibia
@@ -945,14 +943,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     Movement.x2, -Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.x = Movement.x-1
             Movement.x1 = Movement.x1+1
             Movement.z1 = -(Movement.x*Movement.x *
                             0.01875+441.7-5.065*Movement.x)
             Movement.x2 = Movement.x2-(1/math.sqrt(2))
             Movement.y1 = Movement.y1-(1/math.sqrt(2))
-            ophelia.pubb()
+            self.pubb()
 
     def sinistraUscita(self):
         while Movement.x < 135:
@@ -1007,14 +1005,14 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     Movement.x2, -Movement.y1, Movement.z1)
 
-            ophelia.moving()
+            self.moving()
             Movement.x = Movement.x+1
             Movement.x1 = Movement.x1-1
             Movement.z1 = -(Movement.x*Movement.x *
                             0.01875+441.7-5.065*Movement.x)
             Movement.x2 = Movement.x2+(1/math.sqrt(2))
             Movement.y1 = Movement.y1+(1/math.sqrt(2))
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.z2 > -130:
             # d=right a=coxa, f=femur, t=tibia
@@ -1033,9 +1031,9 @@ class Movement:
             Movement.sx_f_3 = -Movement.dx_f_2
             Movement.sx_t_3 = -Movement.dx_t_2
 
-            ophelia.moving()
+            self.moving()
             Movement.z2 = Movement.z2-1
-            ophelia.pubb()
+            self.pubb()
 
     def ruotaDestra(self):
         Movement.z3 = Movement.z
@@ -1057,9 +1055,9 @@ class Movement:
                 Movement.sx_f_2 = -Movement.dx_f_1
                 Movement.sx_t_2 = -Movement.dx_t_1
 
-                ophelia.moving()
+                self.moving()
                 Movement.z3 = Movement.z3+1
-                ophelia.pubb()
+                self.pubb()
 
         Movement.firstStep = 0
         Movement.z1 = Movement.z3
@@ -1117,7 +1115,7 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, -Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y+1
             Movement.y1 = Movement.y*1.199
             b1 = 134.2
@@ -1131,7 +1129,7 @@ class Movement:
 
             c3 = -46656+math.pow(Movement.y1, 2)-33.6*Movement.y1
             Movement.x2 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c3)))/(2)
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.y > -52:
             Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
@@ -1184,7 +1182,7 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, -Movement.y1, Movement.z2)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y-1
             Movement.y1 = Movement.y1-1.199
             b1 = 134.2
@@ -1197,7 +1195,7 @@ class Movement:
             Movement.x1 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c2)))/(2)
             c3 = -46656+math.pow(Movement.y1, 2)-33.6*Movement.y1
             Movement.x2 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c3)))/(2)
-            ophelia.pubb()
+            self.pubb()
 
     def ruotaDestraUscita(self):
         while Movement.y < 0:
@@ -1252,7 +1250,7 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, -Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y+1
             Movement.y1 = Movement.y*1.199
             b1 = 134.2
@@ -1266,7 +1264,7 @@ class Movement:
 
             c3 = -46656+math.pow(Movement.y1, 2)-33.6*Movement.y1
             Movement.x2 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c3)))/(2)
-            ophelia.pubb()
+            self.pubb()
         while Movement.z2 > -130:
             # d=right a=coxa, f=femur, t=tibia
             Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
@@ -1284,9 +1282,9 @@ class Movement:
             Movement.sx_f_2 = -Movement.dx_f_1
             Movement.sx_t_2 = -Movement.dx_t_1
 
-            ophelia.moving()
+            self.moving()
             Movement.z2 = Movement.z2-1
-            ophelia.pubb()
+            self.pubb()
 
         Movement.firstStep = 0
 
@@ -1310,9 +1308,9 @@ class Movement:
                 Movement.sx_f_2 = -Movement.dx_f_1
                 Movement.sx_t_2 = -Movement.dx_t_1
 
-                ophelia.moving()
+                self.moving()
                 Movement.z3 = Movement.z3+1
-                ophelia.pubb()
+                self.pubb()
 
         Movement.firstStep = 0
         Movement.z1 = Movement.z3
@@ -1370,7 +1368,7 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y+1
             Movement.y1 = Movement.y*1.199
             b1 = 134.2
@@ -1384,7 +1382,7 @@ class Movement:
 
             c3 = -46656+math.pow(Movement.y1, 2)-33.6*Movement.y1
             Movement.x2 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c3)))/(2)
-            ophelia.pubb()
+            self.pubb()
 
         while Movement.y > -52:
             Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
@@ -1437,7 +1435,7 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z2)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y-1
             Movement.y1 = Movement.y1-1.199
             b1 = 134.2
@@ -1450,7 +1448,7 @@ class Movement:
             Movement.x1 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c2)))/(2)
             c3 = -46656+math.pow(Movement.y1, 2)-33.6*Movement.y1
             Movement.x2 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c3)))/(2)
-            ophelia.pubb()
+            self.pubb()
 
     def ruotaSinistraUscita(self):
         while Movement.y < 0:
@@ -1505,7 +1503,7 @@ class Movement:
                 Movement.braccio1.calcoloIK_joint3(
                     -Movement.x1, Movement.y1, Movement.z)
 
-            ophelia.moving()
+            self.moving()
             Movement.y = Movement.y+1
             Movement.y1 = Movement.y*1.199
             b1 = 134.2
@@ -1519,7 +1517,7 @@ class Movement:
 
             c3 = -46656+math.pow(Movement.y1, 2)-33.6*Movement.y1
             Movement.x2 = (-b2+math.sqrt(math.pow(b2, 2)-(4*c3)))/(2)
-            ophelia.pubb()
+            self.pubb()
         while Movement.z2 > -130:
             # d=right a=coxa, f=femur, t=tibia
             Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
@@ -1537,100 +1535,52 @@ class Movement:
             Movement.sx_f_2 = -Movement.dx_f_1
             Movement.sx_t_2 = -Movement.dx_t_1
 
-            ophelia.moving()
+            self.moving()
             Movement.z2 = Movement.z2-1
-            ophelia.pubb()
+            self.pubb()
 
         Movement.firstStep = 0
 
 
+    def to_default_position(self):
+        if Movement.dataOld == "s":
+            print("indietro_uscita")
+            self.indietroUscita()
+        elif Movement.dataOld == "w":
+            print("avanti_uscita")
+            self.avantiUscita()
+        elif Movement.dataOld == "a":
+            print("sinistra_uscita")
+            self.ruotaSinistraUscita()
+        elif Movement.dataOld == "d":
+            print("destra_uscita")
+            self.ruotaDestraUscita()
+        Movement.dataOld = ""
+        
+    def control_movement(self, data, move):
+        if Movement.dataOld == data.data or Movement.dataOld == "":
+            move()
+            Movement.dataOld = data.data
+        else :
+            self.to_default_position()
+    
+                  
 ophelia = Movement()
 ophelia.alza()
-w = 0
 
 while not rospy.is_shutdown():
     data = rospy.wait_for_message('/chatter', String)
     if data.data == "w":
-        if Movement.dataOld == data.data or Movement.dataOld == "":
-            print("avanti")
-            ophelia.avanti()
-            Movement.dataOld = "w"
-        elif Movement.dataOld == "s":
-            print("indietro_uscita")
-            ophelia.indietroUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "a":
-            print("sinistra_uscita")
-            ophelia.ruotaSinistraUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "d":
-            print("destra_uscita")
-            ophelia.ruotaDestraUscita()
-            Movement.dataOld = ""
+        ophelia.control_movement(data, ophelia.avanti)
     elif data.data == "s":
-        if Movement.dataOld == data.data or Movement.dataOld == "":
-            print("indietro")
-            ophelia.indietro()
-            Movement.dataOld = "s"
-        elif Movement.dataOld == "w":
-            print("avanti_uscita")
-            ophelia.avantiUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "a":
-            print("sinistra_uscita")
-            ophelia.ruotaSinistraUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "d":
-            print("destra_uscita")
-            ophelia.ruotaDestraUscita()
-            Movement.dataOld = ""
+        ophelia.control_movement(data, ophelia.indietro)
     elif data.data == "a":
-        if Movement.dataOld == data.data or Movement.dataOld == "":
-            print("routa_sinistra")
-            ophelia.ruotaSinistra()
-            Movement.dataOld = "a"
-        elif Movement.dataOld == "w":
-            print("avanti_uscita")
-            ophelia.avantiUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "s":
-            print("indietro_uscita")
-            ophelia.indietroUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "d":
-            print("destra_uscita")
-            ophelia.ruotaDestraUscita()
-            Movement.dataOld = ""
+        ophelia.control_movement(data, ophelia.ruotaSinistra)
     elif data.data == "d":
-        if Movement.dataOld == data.data or Movement.dataOld == "":
-            print("routa_destra")
-            ophelia.ruotaDestra()
-            Movement.dataOld = "d"
-        elif Movement.dataOld == "w":
-            print("avanti_uscita")
-            ophelia.avantiUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "s":
-            print("indietro_uscita")
-            ophelia.indietroUscita()
-            Movement.dataOld = ""
-        elif Movement.dataOld == "a":
-            print("sinistra_uscita")
-            ophelia.ruotaSinistraUscita()
-            Movement.dataOld = ""
+        ophelia.control_movement(data, ophelia.ruotaDestra)
     elif data.data == "z":
         if Movement.dataOld == data.data or Movement.dataOld == "":
             print("stop")
-        elif Movement.dataOld == "a":
-            print("sinistra_uscita")
-            ophelia.ruotaSinistraUscita()
-        elif Movement.dataOld == "d":
-            print("destra_uscita")
-            ophelia.ruotaDestraUscita()
-        elif Movement.dataOld == "w":
-            print("avanti_uscita")
-            ophelia.avantiUscita()
-        elif Movement.dataOld == "d":
-            print("indietro_uscita")
-            ophelia.indietroUscita()
-        Movement.dataOld = ""
+            Movement.dataOld = ""
+        else:
+            ophelia.to_default_position()
