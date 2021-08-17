@@ -4,8 +4,7 @@ import rospy
 import math
 from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
-from std_msgs.msg import String
-from std_msgs.msg import Header
+from std_msgs.msg import Header, Bool, String
 
 
 class Movement:
@@ -1573,21 +1572,34 @@ class Movement:
             self.ruotaDestraUscita()
         Movement.dataOld = ""
         
-    def control_movement(self, data, move):
-        if Movement.dataOld == data.data or Movement.dataOld == "":
-            move()
-            Movement.dataOld = data.data
-        else :
-            self.to_default_position()
-    
-                  
+    def control_movement(self, data, move, distance_detector=False):
+        if not distance_detector:
+            if Movement.dataOld == data.data or Movement.dataOld == "":
+                move()
+                Movement.dataOld = data.data
+            else :
+                self.to_default_position()
+        else:
+            print("Distance detector, can only rotate or back")
+  
 ophelia = Movement()
 ophelia.alza()
+
+    
+my_data = None
+
+def distance_detector(data):
+    global my_data
+    my_data = data.data
+
+rospy.Subscriber(name='exist_obstacle',data_class=Bool, 
+                 callback=distance_detector,queue_size=1)
+
 
 while not rospy.is_shutdown():
     data = rospy.wait_for_message('/chatter', String)
     if data.data == "w":
-        ophelia.control_movement(data, ophelia.avanti)
+        ophelia.control_movement(data, ophelia.avanti, distance_detector=my_data)
     elif data.data == "s":
         ophelia.control_movement(data, ophelia.indietro)
     elif data.data == "a":
