@@ -1550,10 +1550,7 @@ w = 0
 
 while not rospy.is_shutdown():
     data = rospy.wait_for_message('/chatter', String)
-    print(data)
-    print("OLD  == " + Movement.dataOld)
     if data.data == "w":
-        print("aaaa")
         if Movement.dataOld == data.data or Movement.dataOld == "":
             print("avanti")
             ophelia.avanti()
@@ -1570,8 +1567,6 @@ while not rospy.is_shutdown():
             print("destra_uscita")
             ophelia.ruotaDestraUscita()
             Movement.dataOld = ""
-        else:
-          print("BBBB")
     elif data.data == "s":
         if Movement.dataOld == data.data or Movement.dataOld == "":
             print("indietro")
