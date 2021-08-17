@@ -54,10 +54,26 @@ class Movement:
 
     def moving(self):
         Movement.move.header = Header()
-        Movement.move.name = ['anca_dx_1_joint', 'femore_dx_1_joint', 'tibia_dx_1_joint', 'anca_dx_2_joint', 'femore_dx_2_joint', 'tibia_dx_2_joint', 'anca_dx_3_joint', 'femore_dx_3_joint',
-                              'tibia_dx_3_joint', 'anca_sx_1_joint', 'femore_sx_1_joint', 'tibia_sx_1_joint', 'anca_sx_2_joint', 'femore_sx_2_joint', 'tibia_sx_2_joint', 'anca_sx_3_joint', 'femore_sx_3_joint', 'tibia_sx_3_joint']
-        Movement.move.position = (Movement.dx_a_1, Movement.dx_f_1, Movement.dx_t_1, Movement.dx_a_2, Movement.dx_f_2, Movement.dx_t_2, Movement.dx_a_3, Movement.dx_f_3,
-                                  Movement.dx_t_3, Movement.sx_a_1, Movement.sx_f_1, Movement.sx_t_1, Movement.sx_a_2, Movement.sx_f_2, Movement.sx_t_2, Movement.sx_a_3, Movement.sx_f_3, Movement.sx_t_3)
+        Movement.move.name = ['anca_dx_1_joint', 'femore_dx_1_joint',
+                              'tibia_dx_1_joint', 'anca_dx_2_joint',
+                              'femore_dx_2_joint', 'tibia_dx_2_joint',
+                              'anca_dx_3_joint', 'femore_dx_3_joint',
+                              'tibia_dx_3_joint', 'anca_sx_1_joint',
+                              'femore_sx_1_joint', 'tibia_sx_1_joint',
+                              'anca_sx_2_joint', 'femore_sx_2_joint',
+                              'tibia_sx_2_joint', 'anca_sx_3_joint',
+                              'femore_sx_3_joint', 'tibia_sx_3_joint']
+
+        Movement.move.position = (Movement.dx_a_1, Movement.dx_f_1,
+                                  Movement.dx_t_1, Movement.dx_a_2,
+                                  Movement.dx_f_2, Movement.dx_t_2,
+                                  Movement.dx_a_3, Movement.dx_f_3,
+                                  Movement.dx_t_3, Movement.sx_a_1,
+                                  Movement.sx_f_1, Movement.sx_t_1,
+                                  Movement.sx_a_2, Movement.sx_f_2,
+                                  Movement.sx_t_2, Movement.sx_a_3,
+                                  Movement.sx_f_3, Movement.sx_t_3)
+
         Movement.move.velocity = []
         Movement.move.effort = []
         Movement.move.header.stamp = rospy.Time.now()
