@@ -8,8 +8,9 @@ import argparse
 publish_obs = None
 
 
-def convert_depth_image(image, args):
+def convert_depth_image(image, kwargs):
     bridge = CvBridge()
+
     try:
         depth_image = bridge.imgmsg_to_cv2(img_msg=image,
                                            desired_encoding='passthrough')
@@ -17,9 +18,9 @@ def convert_depth_image(image, args):
 
         depth_array = depth_array[0:int(depth_array.shape[0]/4*3), :]
         depth_array = depth_array[::5, ::5]
-        nearest = (depth_array < args['distance_threshold']).sum()
+        nearest = (depth_array < kwargs['distance_threshold']).sum()
 
-        publish_obs.publish(nearest > (depth_array.size)*args['stop_ratio'])
+        publish_obs.publish(nearest > (depth_array.size)*kwargs['stop_ratio'])
     except CvBridgeError:
         print('Error interpreting depth value')
 
@@ -39,10 +40,11 @@ def main():
         exit(1)
 
     rospy.init_node(name='distance_checker')
-    rospy.Subscriber('/camera/aligned_depth_to_color/image_raw',
-                     Image,
-                     convert_depth_image, args,
-                     5)
+    rospy.Subscriber(name='/camera/aligned_depth_to_color/image_raw',
+                     data_class=Image,
+                     callback=convert_depth_image,
+                     callback_args=args,
+                     queue_size=5)
     publish_obs = rospy.Publisher(name='exist_obstacle',
                                   data_class=Bool,
                                   queue_size=1)
