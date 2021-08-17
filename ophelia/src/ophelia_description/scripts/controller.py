@@ -1,24 +1,16 @@
 #!/usr/bin/env python
 import rospy
 from std_msgs.msg import String
-# from actionlib_msgs.msg import GoalID
 from pynput import keyboard
 
 
-time = {'time': '123'}
 pub = rospy.Publisher('chatter', String, queue_size=1)
-# data_class=GoalID,
-# queue_size=1)
 
 rospy.init_node('talker', anonymous=True)
 rate = rospy.Rate(50)
 
 
 def talker(msg):
-    #  msg = String()
-    #  msg = GoalID()
-    #  msg.id = command
-    #  msg.stamp = rospy.Time.now()
     pub.publish(msg)
     rate.sleep()
 
@@ -28,38 +20,26 @@ def on_press(key):
         if format(key.char) == "w":
             rospy.loginfo("avanti")
             talker(format(key.char))
-        elif format(key.char) == "x":
+        elif format(key.char) == "s":
             print("indietro")
             talker(format(key.char))
-        elif format(key.char) == "s":
-            print("stop")
-            talker(format(key.char))
+
         elif format(key.char) == "a":
-            print("sinistra")
-            talker(format(key.char))
-        elif format(key.char) == "d":
-            print("destra")
-            talker(format(key.char))
-        elif format(key.char) == "q":
             print("ruota sinistra")
             talker(format(key.char))
-        elif format(key.char) == "e":
+        elif format(key.char) == "d":
             print("ruota destra")
             talker(format(key.char))
-        elif format(key.char) == "z":
-            print("alza")
-            talker(format(key.char))
+
         elif format(key.char) == "c":
-            print("abbassa")
-            talker(format(key.char))
-        elif format(key.char) == "j":
             print("alza")
             talker(format(key.char))
-        elif format(key.char) == "l":
+        elif format(key.char) == "x":
             print("abbassa")
             talker(format(key.char))
-        elif format(key.char) == "k":
-            print("abbassa")
+
+        elif format(key.char) == "z":
+            print("stop")
             talker(format(key.char))
 
     except AttributeError:
