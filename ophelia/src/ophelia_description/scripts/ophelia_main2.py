@@ -1549,114 +1549,93 @@ ophelia.alza()
 w = 0
 
 while not rospy.is_shutdown():
-    # rospy.init_node('listener', anonymous=True)
-    print('a')
     data = rospy.wait_for_message('/chatter', String)
     print(data)
+    print("OLD  == " + Movement.dataOld)
     if data.data == "w":
-        if Movement.dataOld == data.data:
+        print("aaaa")
+        if Movement.dataOld == data.data or Movement.dataOld == "":
             print("avanti")
             ophelia.avanti()
-        elif Movement.dataOld == "x":
-            print("indietroUscita")
-            ophelia.indietroUscita()
-        elif Movement.dataOld == "":
-            print("avanti")
-            ophelia.avanti()
+            Movement.dataOld = "w"
         elif Movement.dataOld == "s":
-            print("avanti")
-            ophelia.avanti()
+            print("indietro_uscita")
+            ophelia.indietroUscita()
+            Movement.dataOld = ""
         elif Movement.dataOld == "a":
-            print("sinistraUscita")
-            ophelia.sinistraUscita()
+            print("sinistra_uscita")
+            ophelia.ruotaSinistraUscita()
+            Movement.dataOld = ""
         elif Movement.dataOld == "d":
-            print("destraUscita")
-            ophelia.destraUscita()
+            print("destra_uscita")
+            ophelia.ruotaDestraUscita()
+            Movement.dataOld = ""
         else:
-            print("avantiUscita")
-            ophelia.avantiUscita()
-    elif data.data == "x":
-        if Movement.dataOld == data.data:
-            print("indietro")
-            ophelia.indietro()
-        elif Movement.dataOld == "w":
-            print("avantiUscita")
-            ophelia.avantiUscita()
-        elif Movement.dataOld == "":
-            print("indietro")
-            ophelia.indietro()
-        elif Movement.dataOld == "s":
-            print("indietro")
-            ophelia.indietro()
-        elif Movement.dataOld == "a":
-            print("sinistraUscita")
-            ophelia.sinistraUscita()
-        elif Movement.dataOld == "d":
-            print("destraUscita")
-            ophelia.destraUscita()
-        else:
-            print("indietroUscita")
-            ophelia.indietroUscita()
-    elif data.data == "a":
-        if Movement.dataOld == data.data:
-            print("sinistra")
-            ophelia.sinistra()
-        elif Movement.dataOld == "w":
-            print("avantiUscita")
-            ophelia.avantiUscita()
-        elif Movement.dataOld == "":
-            print("sinistra")
-            ophelia.sinistra()
-        elif Movement.dataOld == "s":
-            print("sinistraUscita")
-            ophelia.sinistraUscita()
-        elif Movement.dataOld == "x":
-            print("indietroUscita")
-            ophelia.indietroUscita()
-        elif Movement.dataOld == "d":
-            print("destraUscita")
-            ophelia.destraUscita()
-        else:
-            print("sinistraUscita")
-            ophelia.sinistraUscita()
-    elif data.data == "d":
-        if Movement.dataOld == data.data:
-            print("destra")
-            ophelia.destra()
-        elif Movement.dataOld == "w":
-            print("avantiUscita")
-            ophelia.avantiUscita()
-        elif Movement.dataOld == "":
-            print("destra")
-            ophelia.destra()
-        elif Movement.dataOld == "s":
-            print("sinistraUscita")
-            ophelia.sinistra()
-        elif Movement.dataOld == "x":
-            print("indietroUscita")
-            ophelia.indietroUscita()
-        elif Movement.dataOld == "d":
-            print("destraUscita")
-            ophelia.destraUscita()
-        else:
-            print("destraUscita")
-            ophelia.destraUscita()
+          print("BBBB")
     elif data.data == "s":
-        if Movement.dataOld == "w":
-            print("avantiUscita")
+        if Movement.dataOld == data.data or Movement.dataOld == "":
+            print("indietro")
+            ophelia.indietro()
+            Movement.dataOld = "s"
+        elif Movement.dataOld == "w":
+            print("avanti_uscita")
             ophelia.avantiUscita()
-        elif Movement.dataOld == "x":
-            print("indietroUscita")
-            ophelia.indietroUscita()
+            Movement.dataOld = ""
         elif Movement.dataOld == "a":
-            print("sinistraiUscita")
-            ophelia.sinistraUscita()
+            print("sinistra_uscita")
+            ophelia.ruotaSinistraUscita()
+            Movement.dataOld = ""
         elif Movement.dataOld == "d":
-            print("destraUscita")
-            ophelia.destraUscita()
-
-    Movement.dataOld = data.data
-
-# ophelia.alza()
-# ophelia.indietro()
-# ophelia.avanti()
+            print("destra_uscita")
+            ophelia.ruotaDestraUscita()
+            Movement.dataOld = ""
+    elif data.data == "a":
+        if Movement.dataOld == data.data or Movement.dataOld == "":
+            print("routa_sinistra")
+            ophelia.ruotaSinistra()
+            Movement.dataOld = "a"
+        elif Movement.dataOld == "w":
+            print("avanti_uscita")
+            ophelia.avantiUscita()
+            Movement.dataOld = ""
+        elif Movement.dataOld == "s":
+            print("indietro_uscita")
+            ophelia.indietroUscita()
+            Movement.dataOld = ""
+        elif Movement.dataOld == "d":
+            print("destra_uscita")
+            ophelia.ruotaDestraUscita()
+            Movement.dataOld = ""
+    elif data.data == "d":
+        if Movement.dataOld == data.data or Movement.dataOld == "":
+            print("routa_destra")
+            ophelia.ruotaDestra()
+            Movement.dataOld = "d"
+        elif Movement.dataOld == "w":
+            print("avanti_uscita")
+            ophelia.avantiUscita()
+            Movement.dataOld = ""
+        elif Movement.dataOld == "s":
+            print("indietro_uscita")
+            ophelia.indietroUscita()
+            Movement.dataOld = ""
+        elif Movement.dataOld == "a":
+            print("sinistra_uscita")
+            ophelia.ruotaSinistraUscita()
+            Movement.dataOld = ""
+    elif data.data == "z":
+        if Movement.dataOld == data.data or Movement.dataOld == "":
+            print("stop")
+        elif Movement.dataOld == "a":
+            print("sinistra_uscita")
+            ophelia.ruotaSinistraUscita()
+        elif Movement.dataOld == "d":
+            print("destra_uscita")
+            ophelia.ruotaDestraUscita()
+        elif Movement.dataOld == "w":
+            print("avanti_uscita")
+            ophelia.avantiUscita()
+        elif Movement.dataOld == "d":
+            print("indietro_uscita")
+            ophelia.indietroUscita()
+        Movement.dataOld = ""
