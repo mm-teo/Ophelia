@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find ophelia_description)/gazebo_urdf/ophelia.urdf -urdf -model ophelia_description"
+    args="-file /home/tambu/Ophelia/ophelia/src/ophelia_description/urdf/ophelia_description.urdf -urdf -model ophelia_description"
     output="screen" />
   <node
     name="fake_joint_calibration"
