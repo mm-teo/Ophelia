@@ -3,11 +3,6 @@
 import rospy
 from math import pow, sqrt, atan, asin, acos, pi
 
-# start 135 0 -31
-x = 135.0
-y = 0.0
-z = -31.0
-
 
 class Cinematica:
     __slots__ = 'a', 'f', 't'

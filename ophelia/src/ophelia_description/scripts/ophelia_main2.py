@@ -1,13 +1,11 @@
 #! /usr/bin/env python
 
-import time
 import rospy
 import math
 from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
 from std_msgs.msg import String
 from std_msgs.msg import Header
-from pynput import keyboard
 
 
 class Movement:
@@ -56,10 +54,26 @@ class Movement:
 
     def moving(self):
         Movement.move.header = Header()
-        Movement.move.name = ['anca_dx_1_joint', 'femore_dx_1_joint', 'tibia_dx_1_joint', 'anca_dx_2_joint', 'femore_dx_2_joint', 'tibia_dx_2_joint', 'anca_dx_3_joint', 'femore_dx_3_joint',
-                              'tibia_dx_3_joint', 'anca_sx_1_joint', 'femore_sx_1_joint', 'tibia_sx_1_joint', 'anca_sx_2_joint', 'femore_sx_2_joint', 'tibia_sx_2_joint', 'anca_sx_3_joint', 'femore_sx_3_joint', 'tibia_sx_3_joint']
-        Movement.move.position = (Movement.dx_a_1, Movement.dx_f_1, Movement.dx_t_1, Movement.dx_a_2, Movement.dx_f_2, Movement.dx_t_2, Movement.dx_a_3, Movement.dx_f_3,
-                                  Movement.dx_t_3, Movement.sx_a_1, Movement.sx_f_1, Movement.sx_t_1, Movement.sx_a_2, Movement.sx_f_2, Movement.sx_t_2, Movement.sx_a_3, Movement.sx_f_3, Movement.sx_t_3)
+        Movement.move.name = ['anca_dx_1_joint', 'femore_dx_1_joint',
+                              'tibia_dx_1_joint', 'anca_dx_2_joint',
+                              'femore_dx_2_joint', 'tibia_dx_2_joint',
+                              'anca_dx_3_joint', 'femore_dx_3_joint',
+                              'tibia_dx_3_joint', 'anca_sx_1_joint',
+                              'femore_sx_1_joint', 'tibia_sx_1_joint',
+                              'anca_sx_2_joint', 'femore_sx_2_joint',
+                              'tibia_sx_2_joint', 'anca_sx_3_joint',
+                              'femore_sx_3_joint', 'tibia_sx_3_joint']
+
+        Movement.move.position = (Movement.dx_a_1, Movement.dx_f_1,
+                                  Movement.dx_t_1, Movement.dx_a_2,
+                                  Movement.dx_f_2, Movement.dx_t_2,
+                                  Movement.dx_a_3, Movement.dx_f_3,
+                                  Movement.dx_t_3, Movement.sx_a_1,
+                                  Movement.sx_f_1, Movement.sx_t_1,
+                                  Movement.sx_a_2, Movement.sx_f_2,
+                                  Movement.sx_t_2, Movement.sx_a_3,
+                                  Movement.sx_f_3, Movement.sx_t_3)
+
         Movement.move.velocity = []
         Movement.move.effort = []
         Movement.move.header.stamp = rospy.Time.now()
@@ -571,472 +585,6 @@ class Movement:
             Movement.z = Movement.z-1
             ophelia.pubb()
 
-    def destra(self):
-        Movement.z3 = Movement.z
-        if Movement.firstStep == 1:
-            while Movement.z3 < -100:
-                # d=right a=coxa, f=femur, t=tibia
-                Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                    Movement.x, Movement.y, Movement.z3)
-                Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                    Movement.x, Movement.y, Movement.z3)
-                Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                    Movement.x, Movement.y, Movement.z3)
-
-                Movement.sx_a_1 = Movement.dx_a_2
-                Movement.sx_f_1 = -Movement.dx_f_2
-                Movement.sx_t_1 = -Movement.dx_t_2
-
-                Movement.sx_a_3 = Movement.dx_a_2
-                Movement.sx_f_3 = -Movement.dx_f_2
-                Movement.sx_t_3 = -Movement.dx_t_2
-
-                ophelia.moving()
-                Movement.z3 = Movement.z3+1
-                ophelia.pubb()
-
-        Movement.firstStep = 0
-        Movement.z1 = Movement.z3
-        Movement.z2 = Movement.z3
-
-        while Movement.x > 95:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y, Movement.z1)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, -Movement.y1, Movement.z)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, Movement.y1, Movement.z1)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x1, -Movement.y, Movement.z)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, -Movement.y1, Movement.z1)
-
-            ophelia.moving()
-            Movement.x = Movement.x-1
-            Movement.x1 = Movement.x1+1
-            Movement.z1 = -(Movement.x*Movement.x *
-                            0.01875+441.7-5.065*Movement.x)
-            Movement.x2 = Movement.x2-(1/math.sqrt(2))
-            Movement.y1 = Movement.y1-(1/math.sqrt(2))
-            ophelia.pubb()
-
-        while Movement.x < 175:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z1)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y, Movement.z)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y, Movement.z)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y, Movement.z)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, -Movement.y1, Movement.z1)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, -Movement.y1, Movement.z1)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, -Movement.y1, Movement.z1)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, Movement.y1, Movement.z)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, Movement.y1, Movement.z)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x1, Movement.y, Movement.z1)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x1, Movement.y, Movement.z1)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x1, Movement.y, Movement.z1)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, -Movement.y1, Movement.z)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, -Movement.y1, Movement.z)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, -Movement.y1, Movement.z)
-
-            ophelia.moving()
-            Movement.x = Movement.x+1
-            Movement.x1 = Movement.x1-1
-            Movement.z1 = -(Movement.x*Movement.x *
-                            0.01875+441.7-5.065*Movement.x)
-            Movement.x2 = Movement.x2+(1/math.sqrt(2))
-            Movement.y1 = Movement.y1+(1/math.sqrt(2))
-            ophelia.pubb()
-
-    def destraUscita(self):
-        while Movement.x > 135:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y, Movement.z1)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, -Movement.y1, Movement.z)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, Movement.y1, Movement.z1)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x1, -Movement.y, Movement.z)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, -Movement.y1, Movement.z1)
-
-            ophelia.moving()
-            Movement.x = Movement.x-1
-            Movement.x1 = Movement.x1+1
-            Movement.z1 = -(Movement.x*Movement.x *
-                            0.01875+441.7-5.065*Movement.x)
-            Movement.x2 = Movement.x2-(1/math.sqrt(2))
-            Movement.y1 = Movement.y1-(1/math.sqrt(2))
-            ophelia.pubb()
-
-        while Movement.z2 > -130:
-            # d=right a=coxa, f=femur, t=tibia
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z2)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z2)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z2)
-
-            Movement.sx_a_1 = Movement.dx_a_2
-            Movement.sx_f_1 = -Movement.dx_f_2
-            Movement.sx_t_1 = -Movement.dx_t_2
-
-            Movement.sx_a_3 = Movement.dx_a_2
-            Movement.sx_f_3 = -Movement.dx_f_2
-            Movement.sx_t_3 = -Movement.dx_t_2
-
-            ophelia.moving()
-            Movement.z2 = Movement.z2-1
-            ophelia.pubb()
-
-    def sinistra(self):
-        Movement.z3 = Movement.z
-        if Movement.firstStep == 1:
-            while Movement.z3 < -100:
-                # d=right a=coxa, f=femur, t=tibia
-                Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                    Movement.x, Movement.y, Movement.z3)
-                Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                    Movement.x, Movement.y, Movement.z3)
-                Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                    Movement.x, Movement.y, Movement.z3)
-
-                Movement.sx_a_1 = Movement.dx_a_2
-                Movement.sx_f_1 = -Movement.dx_f_2
-                Movement.sx_t_1 = -Movement.dx_t_2
-
-                Movement.sx_a_3 = Movement.dx_a_2
-                Movement.sx_f_3 = -Movement.dx_f_2
-                Movement.sx_t_3 = -Movement.dx_t_2
-
-                ophelia.moving()
-                Movement.z3 = Movement.z3+1
-                ophelia.pubb()
-
-        Movement.firstStep = 0
-        Movement.z1 = Movement.z3
-        Movement.z2 = Movement.z3
-
-        while Movement.x < 175:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y, Movement.z1)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, -Movement.y1, Movement.z)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, Movement.y1, Movement.z1)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x1, -Movement.y, Movement.z)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, -Movement.y1, Movement.z1)
-
-            ophelia.moving()
-            Movement.x = Movement.x+1
-            Movement.x1 = Movement.x1-1
-            Movement.z1 = -(Movement.x*Movement.x *
-                            0.01875+441.7-5.065*Movement.x)
-            Movement.x2 = Movement.x2+(1/math.sqrt(2))
-            Movement.y1 = Movement.y1+(1/math.sqrt(2))
-            ophelia.pubb()
-
-        while Movement.x > 95:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z1)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y, Movement.z)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y, Movement.z)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y, Movement.z)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, -Movement.y1, Movement.z1)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, -Movement.y1, Movement.z1)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, -Movement.y1, Movement.z1)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, Movement.y1, Movement.z)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, Movement.y1, Movement.z)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x1, Movement.y, Movement.z1)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x1, Movement.y, Movement.z1)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x1, Movement.y, Movement.z1)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, -Movement.y1, Movement.z)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, -Movement.y1, Movement.z)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, -Movement.y1, Movement.z)
-
-            ophelia.moving()
-            Movement.x = Movement.x-1
-            Movement.x1 = Movement.x1+1
-            Movement.z1 = -(Movement.x*Movement.x *
-                            0.01875+441.7-5.065*Movement.x)
-            Movement.x2 = Movement.x2-(1/math.sqrt(2))
-            Movement.y1 = Movement.y1-(1/math.sqrt(2))
-            ophelia.pubb()
-
-    def sinistraUscita(self):
-        while Movement.x < 135:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y, Movement.z1)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y, Movement.z1)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, -Movement.y1, Movement.z)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, -Movement.y1, Movement.z)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, Movement.y1, Movement.z1)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, Movement.y1, Movement.z1)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x1, -Movement.y, Movement.z)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x1, -Movement.y, Movement.z)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x2, -Movement.y1, Movement.z1)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x2, -Movement.y1, Movement.z1)
-
-            ophelia.moving()
-            Movement.x = Movement.x+1
-            Movement.x1 = Movement.x1-1
-            Movement.z1 = -(Movement.x*Movement.x *
-                            0.01875+441.7-5.065*Movement.x)
-            Movement.x2 = Movement.x2+(1/math.sqrt(2))
-            Movement.y1 = Movement.y1+(1/math.sqrt(2))
-            ophelia.pubb()
-
-        while Movement.z2 > -130:
-            # d=right a=coxa, f=femur, t=tibia
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z2)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z2)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z2)
-
-            Movement.sx_a_1 = Movement.dx_a_2
-            Movement.sx_f_1 = -Movement.dx_f_2
-            Movement.sx_t_1 = -Movement.dx_t_2
-
-            Movement.sx_a_3 = Movement.dx_a_2
-            Movement.sx_f_3 = -Movement.dx_f_2
-            Movement.sx_t_3 = -Movement.dx_t_2
-
-            ophelia.moving()
-            Movement.z2 = Movement.z2-1
-            ophelia.pubb()
-
     def ruotaDestra(self):
         Movement.z3 = Movement.z
         if Movement.firstStep == 1:
@@ -1546,7 +1094,6 @@ class Movement:
 
 ophelia = Movement()
 ophelia.alza()
-w = 0
 
 while not rospy.is_shutdown():
     data = rospy.wait_for_message('/chatter', String)
@@ -1567,7 +1114,6 @@ while not rospy.is_shutdown():
             print("destra_uscita")
             ophelia.ruotaDestraUscita()
             Movement.dataOld = ""
-        else:
     elif data.data == "s":
         if Movement.dataOld == data.data or Movement.dataOld == "":
             print("indietro")
