@@ -6,6 +6,7 @@ ROS: Melodic
 # Hardware requirements
 
 Real Sense D435: *Tested* \
+kinect xbox One: *Tested* (but too heavy)\
 kinect xbox 360: *Not Tested*
 
 # First approach
@@ -20,11 +21,13 @@ kinect xbox 360: *Not Tested*
 
 This library allows us to use some cheaper sensor for the sapce anlysis, the one we used were:
 - Real Sense D435
+- Kinect xbox One
 - Kinect xbox 360
 
 For the set-up of the devices and the library we used:
 - [RealSense](http://wiki.ros.org/RealSense)
 - [librealsense2](http://wiki.ros.org/librealsense2)
+- [octomap-rviz-plugins](http://wiki.ros.org/octomap_rviz_plugins)
 
 Then we tested the base mapping following the guide mapping using:
 ```
@@ -60,15 +63,14 @@ rtabmap-databaseViewer ~/.ros/rtabmap.db
 
 **Filtering image raw:**
 * start from 640x480.
-* campione ogni 5 pixel: 128x96
-* cancellati le righe piu basse dell'immagine in quanto il robot è basso e pèotrebbe pensare che il terreno è un ostacolo.
-* contiamo solo i pixel con valore minore di 250mm, se questi sono piu del 20% del totale, allora c'è un ostacolo.
-altrimenti non vi è un ostacolo
-
-* We fixed an generated the specific comand for being able to move the robot
+* cancellati le righe piu basse dell'immagine in quanto il robot è basso e potrebbe pensare che il terreno sia un ostacolo.
+* campiono ogni 5 pixel: 128x96
+* contiamo solo i pixel con valore parametrico (>200), se questi sono più di una certa ratio parametrica, allora c'è un ostacolo.
+altrimenti non vi è un ostacolo.
+* We fix and generate the specific comand to be able to move the robot
 
 # TODO list
 
-1. :x: Mappare e salvare la nuova area a spostando il robot
-1. :heavy_check_mark: Spostare il robot a mano stopparlo nel caso sia troppo vicino ad un ostacolo
-1. :x: Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
+1. :heavy_check_mark: Mappare e salvare la nuova area
+2. :heavy_check_mark: Spostare il robot a mano stopparlo nel caso sia troppo vicino ad un ostacolo
+3. :x: Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
