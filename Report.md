@@ -52,7 +52,7 @@ rtabmap-databaseViewer ~/.ros/rtabmap.db
 
 # Report
 
-* **NOTE: we must use python2 and not python3 because cv_bridge must be recompiled to python3 in order to be executed, for testing reason and time we used python2 for that, if possible we will recompile it.**
+* **NOTE: used python2 and not python3 because cv_bridge must be recompiled to python3 in order to be executed, for testing reason and time we used python2 for that, if possible we will recompile it.**
 * We defined a script that read the raw data from the sensor and measure the distance from it, this will allow us to know if some new obstacle *Not present in the mapped area* is now present. This boolean function keep sendig data to the topic:
 ```
 /camera/exist_obstacle
@@ -66,8 +66,9 @@ rtabmap-databaseViewer ~/.ros/rtabmap.db
 altrimenti non vi è un ostacolo
 
 * We fixed an generated the specific comand for being able to move the robot
+
 # TODO list
 
-1. Mappare la zona a mano con i comandi base del robot
-  1. Mappare facendolo andare dritto e poi ruotare se siamo troppo vicini al muro
-1. Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
+1. :x: Mappare e salvare la nuova area a spostando il robot
+1. :heavy_check_mark: Spostare il robot a mano stopparlo nel caso sia troppo vicino ad un ostacolo
+1. :x: Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
