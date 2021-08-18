@@ -73,4 +73,6 @@ altrimenti non vi è un ostacolo.
 
 1. :heavy_check_mark: Mappare e salvare la nuova area
 2. :heavy_check_mark: Spostare il robot a mano stopparlo nel caso sia troppo vicino ad un ostacolo
-3. :x: Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
+3. Alternative:
+   1. :x: Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
+   2. :x: Da rviz segnare un goal; esso verrà pubblicato nel topic "/move_base_simple/goal"; ripubblicarlo in "/rtabmap/goal" o altro; vedere se viene generato il path.  
