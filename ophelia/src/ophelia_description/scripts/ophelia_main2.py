@@ -1558,7 +1558,6 @@ class Movement:
 
         Movement.firstStep = 0
 
-
     def to_default_position(self):
         if Movement.dataOld == Comand.BACKWORD.value:
             print("indietro_uscita")
@@ -1573,33 +1572,36 @@ class Movement:
             print("destra_uscita")
             self.ruotaDestraUscita()
         Movement.dataOld = Comand.DEFAULT.value
-        
+
     def control_movement(self, data, move, distance_detector=False):
         if not distance_detector:
             if Movement.dataOld == data.data or Movement.dataOld == Comand.DEFAULT.value:
                 move()
                 Movement.dataOld = data.data
-            else :
+            else:
                 self.to_default_position()
         else:
             print("Distance detector, can only rotate or back")
-  
+
+
 ophelia = Movement()
 ophelia.alza()
 
-    
+
 my_data = None
+
 
 def distance_detector(data):
     global my_data
     my_data = data.data
 
-rospy.Subscriber(name='exist_obstacle',data_class=Bool, 
-                 callback=distance_detector,queue_size=1)
+
+rospy.Subscriber(name='exist_obstacle', data_class=Bool,
+                 callback=distance_detector, queue_size=1)
 
 
 while not rospy.is_shutdown():
-    #data = rospy.wait_for_message('/keyboard_command', String)
+    # data = rospy.wait_for_message('/keyboard_command', String)
     data = rospy.wait_for_message('/discrete_movement', String)
     if data.data == Comand.FOREWORD.value:
         ophelia.control_movement(data, ophelia.avanti, distance_detector=my_data)
