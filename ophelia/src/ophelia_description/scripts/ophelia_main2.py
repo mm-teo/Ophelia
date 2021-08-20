@@ -5,6 +5,8 @@ import math
 from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Header, Bool, String
+from enum import Enum
+from movements import Move
 
 
 class Movement:
@@ -49,7 +51,7 @@ class Movement:
     sx_t_3 = 0
 
     firstStep = 1
-    dataOld = ""
+    dataOld = Move.DEFAULT
 
     def moving(self):
         Movement.move.header = Header()
@@ -1558,23 +1560,23 @@ class Movement:
 
 
     def to_default_position(self):
-        if Movement.dataOld == "s":
+        if Movement.dataOld == Move.BACKWORD:
             print("indietro_uscita")
             self.indietroUscita()
-        elif Movement.dataOld == "w":
+        elif Movement.dataOld == Move.FOREWORD:
             print("avanti_uscita")
             self.avantiUscita()
-        elif Movement.dataOld == "a":
+        elif Movement.dataOld == Move.LEFT:
             print("sinistra_uscita")
             self.ruotaSinistraUscita()
-        elif Movement.dataOld == "d":
+        elif Movement.dataOld == Move.RIGHT:
             print("destra_uscita")
             self.ruotaDestraUscita()
-        Movement.dataOld = ""
+        Movement.dataOld = Move.DEFAULT
         
     def control_movement(self, data, move, distance_detector=False):
         if not distance_detector:
-            if Movement.dataOld == data.data or Movement.dataOld == "":
+            if Movement.dataOld == data.data or Movement.dataOld == Move.DEFAULT:
                 move()
                 Movement.dataOld = data.data
             else :
@@ -1597,18 +1599,19 @@ rospy.Subscriber(name='exist_obstacle',data_class=Bool,
 
 
 while not rospy.is_shutdown():
-    data = rospy.wait_for_message('/chatter', String)
-    if data.data == "w":
+    #data = rospy.wait_for_message('/chatter', String)
+    data = rospy.wait_for_message('/robot_discrete_movement', Move)
+    if data.data == Move.FOREWORD:
         ophelia.control_movement(data, ophelia.avanti, distance_detector=my_data)
-    elif data.data == "s":
+    elif data.data == Move.BACKWORD:
         ophelia.control_movement(data, ophelia.indietro)
-    elif data.data == "a":
+    elif data.data == Move.LEFT:
         ophelia.control_movement(data, ophelia.ruotaSinistra)
-    elif data.data == "d":
+    elif data.data == Move.RIGHT:
         ophelia.control_movement(data, ophelia.ruotaDestra)
-    elif data.data == "z":
-        if Movement.dataOld == data.data or Movement.dataOld == "":
+    elif data.data == Move.STOP:
+        if Movement.dataOld == data.data or Movement.dataOld == Move.DEFAULT:
             print("stop")
-            Movement.dataOld = ""
+            Movement.dataOld = Move.DEFAULT
         else:
             ophelia.to_default_position()
