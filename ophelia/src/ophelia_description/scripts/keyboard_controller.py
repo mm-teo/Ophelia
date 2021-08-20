@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 import rospy
-from enum import Enum
-from movements import Move
+from movements import Comand
 from std_msgs.msg import String
 from pynput import keyboard
 
 
-pub = rospy.Publisher('chatter', Enum, queue_size=1)
+pub = rospy.Publisher('keyboard_command', String, queue_size=1)
 
-rospy.init_node('talker', anonymous=True)
+rospy.init_node('keyboard_talker', anonymous=True)
 rate = rospy.Rate(50)
 
 
@@ -21,19 +20,25 @@ def on_press(key):
     try:
         if format(key.char) == "w":
             rospy.loginfo("avanti")
-            talker(Move.FOREWORD)
+            talker(Comand.FOREWORD.value)
         elif format(key.char) == "s":
             print("indietro")
-            talker(Move.BACKWORD)
+            talker(Comand.BACKWORD.value)
         elif format(key.char) == "a":
             print("ruota sinistra")
-            talker(Move.LEFT)
+            talker(Comand.LEFT.value)
         elif format(key.char) == "d":
             print("ruota destra")
-            talker(Move.RIGHT)
+            talker(Comand.RIGHT.value)
         elif format(key.char) == "z":
             print("stop")
-            talker(Move.STOP)
+            talker(Comand.STOP.value)
+        elif format(key.char) == "d":
+            print("ruota destra")
+            talker(Comand.RIGHT.value)
+        elif format(key.char) == "m":
+            print("ruota destra")
+            talker(Comand.SWITCH_MODE.value)
 
     except AttributeError:
         print('special key {0} pressed'.format(key))

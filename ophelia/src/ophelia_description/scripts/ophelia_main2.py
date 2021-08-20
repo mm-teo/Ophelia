@@ -6,7 +6,7 @@ from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Header, Bool, String
 from enum import Enum
-from movements import Move
+from movements import Comand
 
 
 class Movement:
@@ -51,7 +51,7 @@ class Movement:
     sx_t_3 = 0
 
     firstStep = 1
-    dataOld = Move.DEFAULT
+    dataOld = Comand.DEFAULT.value
 
     def moving(self):
         Movement.move.header = Header()
@@ -1560,23 +1560,23 @@ class Movement:
 
 
     def to_default_position(self):
-        if Movement.dataOld == Move.BACKWORD:
+        if Movement.dataOld == Comand.BACKWORD.value:
             print("indietro_uscita")
             self.indietroUscita()
-        elif Movement.dataOld == Move.FOREWORD:
+        elif Movement.dataOld == Comand.FOREWORD.value:
             print("avanti_uscita")
             self.avantiUscita()
-        elif Movement.dataOld == Move.LEFT:
+        elif Movement.dataOld == Comand.LEFT.value:
             print("sinistra_uscita")
             self.ruotaSinistraUscita()
-        elif Movement.dataOld == Move.RIGHT:
+        elif Movement.dataOld == Comand.RIGHT.value:
             print("destra_uscita")
             self.ruotaDestraUscita()
-        Movement.dataOld = Move.DEFAULT
+        Movement.dataOld = Comand.DEFAULT.value
         
     def control_movement(self, data, move, distance_detector=False):
         if not distance_detector:
-            if Movement.dataOld == data.data or Movement.dataOld == Move.DEFAULT:
+            if Movement.dataOld == data.data or Movement.dataOld == Comand.DEFAULT.value:
                 move()
                 Movement.dataOld = data.data
             else :
@@ -1599,19 +1599,18 @@ rospy.Subscriber(name='exist_obstacle',data_class=Bool,
 
 
 while not rospy.is_shutdown():
-    #data = rospy.wait_for_message('/chatter', String)
-    data = rospy.wait_for_message('/robot_discrete_movement', Move)
-    if data.data == Move.FOREWORD:
+    #data = rospy.wait_for_message('/keyboard_command', String)
+    data = rospy.wait_for_message('/discrete_movement', String)
+    if data.data == Comand.FOREWORD.value:
         ophelia.control_movement(data, ophelia.avanti, distance_detector=my_data)
-    elif data.data == Move.BACKWORD:
+    elif data.data == Comand.BACKWORD.value:
         ophelia.control_movement(data, ophelia.indietro)
-    elif data.data == Move.LEFT:
+    elif data.data == Comand.LEFT.value:
         ophelia.control_movement(data, ophelia.ruotaSinistra)
-    elif data.data == Move.RIGHT:
+    elif data.data == Comand.RIGHT.value:
         ophelia.control_movement(data, ophelia.ruotaDestra)
-    elif data.data == Move.STOP:
-        if Movement.dataOld == data.data or Movement.dataOld == Move.DEFAULT:
-            print("stop")
-            Movement.dataOld = Move.DEFAULT
+    elif data.data == Comand.STOP.value:
+        if Movement.dataOld == data.data or Movement.dataOld == Comand.DEFAULT.value:
+            Movement.dataOld = Comand.DEFAULT.value
         else:
             ophelia.to_default_position()
