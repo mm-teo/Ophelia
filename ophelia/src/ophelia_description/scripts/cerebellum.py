@@ -11,13 +11,11 @@ discrete_mov = None
 
 
 class CerebellumState:
-    __slots__ = 'auto_move', 'keyboard_command'
+    __slots__ = 'auto_move'
 
     def __init__(self,
-                 auto_move=False,
-                 keyboard_command=Command('')):
+                 auto_move=False):
         self.auto_move = auto_move
-        self.keyboard_command = keyboard_command
         th = threading.Thread(target=self.cycle)
         th.daemon = True
         th.start()
@@ -26,9 +24,8 @@ class CerebellumState:
         command = Command(command.data)
         if command == Command.SWITCH_MODE:
             self.auto_move = not self.auto_move
-        else:
-            self.keyboard_command = command
-            self.update_direction()
+        elif not self.auto_move:
+            discrete_mov.publish(command.value)
 
     def cycle(self):
         while True:
@@ -37,10 +34,7 @@ class CerebellumState:
                 self.update_direction()
 
     def update_direction(self):
-        if self.auto_move:
-            pass
-        else:
-            discrete_mov.publish(self.keyboard_command.value)
+        pass
 
 
 def main():
