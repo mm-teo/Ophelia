@@ -5,8 +5,9 @@ ROS: Melodic
 
 # Hardware requirements
 
-Real Sense D435\
-kinect xbox 360
+Real Sense D435: *Tested* \
+kinect xbox One: *Tested* (but too heavy)\
+kinect xbox 360: *Not Tested*
 
 # First approach
 
@@ -20,21 +21,31 @@ kinect xbox 360
 
 This library allows us to use some cheaper sensor for the sapce anlysis, the one we used were:
 - Real Sense D435
+- Kinect xbox One
 - Kinect xbox 360
 
 For the set-up of the devices and the library we used:
 - [RealSense](http://wiki.ros.org/RealSense)
 - [librealsense2](http://wiki.ros.org/librealsense2)
+- [octomap-rviz-plugins](http://wiki.ros.org/octomap_rviz_plugins)
 
-Then we tested the base mapping following the guide mapping using:
+Then we tested the base mapping following the mapping guide using:
+To run with realsense D435:
 ```
-$ roslaunch rtabmap_ros rtabmap.launch \
+roslaunch realsense2_camera rs_camera.launch align_depth:=true
+```
+Than:
+```
+roslaunch rtabmap_ros rtabmap.launch \
    rtabmap_args:="--delete_db_on_start" \
+   rtabmapviz:=false rviz:=true \
    depth_topic:=/camera/aligned_depth_to_color/image_raw \
    rgb_topic:=/camera/color/image_raw \
    camera_info_topic:=/camera/color/camera_info \
    approx_sync:=false
 ```
+\
+\
 The result of the library is the 3D and 2D map of the envoirment, this map can then be used to perform the localization of the camera, so the camera knows where it is in the previus analyzed sapce. The map is found at:
 
 ```
@@ -46,8 +57,26 @@ rtabmap-databaseViewer ~/.ros/rtabmap.db
 ```
 **NOTE: The camera using this packet works**
 
+# Report
+
+* **NOTE: used python2 and not python3 because cv_bridge must be recompiled to python3 in order to be executed, for testing reason and time we used python2 for that, if possible we will recompile it.**
+* We defined a script that read the raw data from the sensor and measure the distance from it, this will allow us to know if some new obstacle *Not present in the mapped area* is now present. This boolean function keep sendig data to the topic:
+```
+/camera/exist_obstacle
+```
+
+**Filtering image raw:**
+* start from 640x480.
+* cancellati le righe piu basse dell'immagine in quanto il robot è basso e potrebbe pensare che il terreno sia un ostacolo.
+* campiono ogni 5 pixel: 128x96
+* contiamo solo i pixel con valore parametrico (>200), se questi sono più di una certa ratio parametrica, allora c'è un ostacolo.
+altrimenti non vi è un ostacolo.
+* We fix and generate the specific comand to be able to move the robot
+
 # TODO list
 
-1. Mappare la zona a mano con i comandi base del robot
-  1. Mappare facendolo andare dritto e poi ruotare se siamo troppo vicini al muro
-1. Una volta mappata la zona utilizzare il grafo generato dal pacchetto per poi consentire al robot di spostarsi da un punto ad un'altro
+1. :heavy_check_mark: Mappare e salvare la nuova area
+2. :heavy_check_mark: Spostare il robot a mano stopparlo nel caso sia troppo vicino ad un ostacolo
+3. Movimento autonomo:
+   1. :heavy_check_mark: Da rviz segnare un goal; esso verrà pubblicato nel topic "/move_base_simple/goal"; ripubblicarlo in "/rtabmap/goal"; viene generato il path
+   2. :x: Seguire il path   
