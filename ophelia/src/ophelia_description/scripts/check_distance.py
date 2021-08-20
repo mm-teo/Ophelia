@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import rospy
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
@@ -31,7 +32,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--distance-threshold', type=int)
     parser.add_argument('--stop-ratio', type=float)
-    args = vars(parser.parse_args())
+    args, unknown = parser.parse_known_args()
+    args = vars(args)
     if args['distance_threshold'] <= 200:
         print('Error: distance-threshold must be greater than 200')
         exit(1)

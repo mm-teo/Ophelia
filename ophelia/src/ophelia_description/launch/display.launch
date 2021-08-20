@@ -1,14 +1,24 @@
 <launch>
 
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="align_depth" value="true" />
+  </include>
+   
+	
   <arg name="model" default="$(find ophelia_description)/urdf/ophelia_description.urdf"/>
   <arg name="gui" default="false" />
   <arg name="rvizconfig" default="$(find ophelia_description)/rviz_config/ophelia_config.rviz" />
 
+ 
+
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
   <param name="use_gui" value="$(arg gui)"/>
 
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
-  <node pkg="ophelia_description" type="keyboard_controller.py" name="keyboard_talker"  output="screen"></node>
+
+  <node pkg="ophelia_description" type="keyboard_controller.py" name="keyboard_talker" output="screen" />
+  <node pkg="ophelia_description" type="check_distance.py" args="--distance-threshold 201 --stop-ratio 0.2" name="distance_checker" output="screen" /> 
+  <node pkg="ophelia_description" type="ophelia.py" name="ophelia" output="screen" />
+
 </launch>
