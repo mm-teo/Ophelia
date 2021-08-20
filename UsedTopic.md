@@ -34,7 +34,7 @@ Return True if there is a obstacle.
 
 # Movement
 
-## /robot_discrete/movement
+## /discrete_movement
 Generate output from custom script using /rtabmap/odom, /rtabmap/goal_out, /rtabmap/goal_reached, /exist_obstacle and /chatter.
 
 /chatter and other topics are mutually exclusive.

@@ -6,7 +6,9 @@ from std_msgs.msg import Bool
 import numpy as np
 import argparse
 
-publish_obs = None
+publish_obs = rospy.Publisher(name='exist_obstacle',
+                              data_class=Bool,
+                              queue_size=1)
 
 
 def convert_depth_image(image, kwargs):
@@ -27,8 +29,6 @@ def convert_depth_image(image, kwargs):
 
 
 def main():
-    global publish_obs
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--distance-threshold', type=int)
     parser.add_argument('--stop-ratio', type=float)
@@ -47,9 +47,6 @@ def main():
                      callback=convert_depth_image,
                      callback_args=args,
                      queue_size=5)
-    publish_obs = rospy.Publisher(name='exist_obstacle',
-                                  data_class=Bool,
-                                  queue_size=1)
 
     rospy.spin()
 

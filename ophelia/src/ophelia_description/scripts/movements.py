@@ -2,9 +2,9 @@
 
 from enum import Enum
 
-class Comand(Enum):
-    FOREWORD = "foreword"
-    BACKWORD = "backword"
+class Command(Enum):
+    FOREWARD = "foreward"
+    BACKWARD = "backward"
     LEFT = "left"
     RIGHT = "right"
     STOP = "stop"
