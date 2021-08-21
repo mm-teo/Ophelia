@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from movements import Comand
+from movements import Command
 from std_msgs.msg import String
 from pynput import keyboard
 
@@ -21,25 +21,25 @@ def on_press(key):
     try:
         if format(key.char) == "w":
             rospy.loginfo("avanti")
-            talker(Comand.FOREWORD.value)
+            talker(Command.FOREWARD.value)
         elif format(key.char) == "s":
             print("indietro")
-            talker(Comand.BACKWORD.value)
+            talker(Command.BACKWARD.value)
         elif format(key.char) == "a":
             print("ruota sinistra")
-            talker(Comand.LEFT.value)
+            talker(Command.LEFT.value)
         elif format(key.char) == "d":
             print("ruota destra")
-            talker(Comand.RIGHT.value)
+            talker(Command.RIGHT.value)
         elif format(key.char) == "z":
             print("stop")
-            talker(Comand.STOP.value)
+            talker(Command.STOP.value)
         elif format(key.char) == "d":
             print("ruota destra")
-            talker(Comand.RIGHT.value)
+            talker(Command.RIGHT.value)
         elif format(key.char) == "m":
             print("ruota destra")
-            talker(Comand.SWITCH_MODE.value)
+            talker(Command.SWITCH_MODE.value)
 
     except AttributeError:
         print('special key {0} pressed'.format(key))

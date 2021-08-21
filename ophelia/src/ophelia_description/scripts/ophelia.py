@@ -4,23 +4,21 @@ import rospy
 import math
 from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
-from std_msgs.msg import Header, Bool, String
-from enum import Enum
+from std_msgs.msg import Header, String
 from movements import Command
 
 
 class Movement:
+    __slots__ = 'old_cmd'
+
     def __init__(self):
-        pass
+        self.old_cmd = Command.DEFAULT
 
     # def posizione base
     x = 135.0
     y = 0.0
     z = -31.0
 
-    pub = rospy.Publisher('/joint_states', JointState, queue_size=1)
-    rospy.init_node('joint_state_publisher')
-    rate = rospy.Rate(50)
     move = JointState()
     braccio1 = Cinematica()
 
@@ -51,7 +49,6 @@ class Movement:
     sx_t_3 = 0
 
     firstStep = 1
-    dataOld = Command.DEFAULT.value
 
     def moving(self):
         Movement.move.header = Header()
@@ -80,9 +77,8 @@ class Movement:
         Movement.move.header.stamp = rospy.Time.now()
 
     def pubb(self):
-        Movement.pub.publish(Movement.move)
-        # print(Movement.dx_a_1,Movement.dx_f_1,Movement.dx_t_1)
-        Movement.rate.sleep()
+        pub.publish(Movement.move)
+        rate.sleep()
 
     def avanti(self):
         Movement.z3 = Movement.z
@@ -1559,55 +1555,55 @@ class Movement:
         Movement.firstStep = 0
 
     def to_default_position(self):
-        if Movement.dataOld == Command.BACKWORD.value:
-            print("indietro_uscita")
+        if self.old_cmd == Command.BACKWARD:
             self.indietroUscita()
-        elif Movement.dataOld == Command.FOREWORD.value:
-            print("avanti_uscita")
+        elif self.old_cmd == Command.FOREWARD:
             self.avantiUscita()
-        elif Movement.dataOld == Command.LEFT.value:
-            print("sinistra_uscita")
+        elif self.old_cmd == Command.LEFT:
             self.ruotaSinistraUscita()
-        elif Movement.dataOld == Command.RIGHT.value:
-            print("destra_uscita")
+        elif self.old_cmd == Command.RIGHT:
             self.ruotaDestraUscita()
-        Movement.dataOld = Command.DEFAULT.value
+        self.old_cmd = Command.DEFAULT
 
-    def control_movement(self, data, move):
-        if Movement.dataOld == data.data or Movement.dataOld == Command.DEFAULT.value:
+    def control_movement(self, command, move):
+        if self.old_cmd == command or self.old_cmd == Command.DEFAULT:
             move()
-            Movement.dataOld = data.data
+            self.old_cmd = command
         else:
             self.to_default_position()
 
 
-def distance_detector(data):
-    global my_data
-    my_data = data.data
-
-
-ophelia = Movement()
-ophelia.alza()
-
-my_data = None
-
-
-rospy.Subscriber(name='exist_obstacle', data_class=Bool,
-                 callback=distance_detector, queue_size=1)
-
-
-while not rospy.is_shutdown():
-    data = rospy.wait_for_message('/keyboard_command', String)
-    if data.data == Command.FOREWORD.value:
-        ophelia.control_movement(data, ophelia.avanti)
-    elif data.data == Command.BACKWORD.value:
-        ophelia.control_movement(data, ophelia.indietro)
-    elif data.data == Command.LEFT.value:
-        ophelia.control_movement(data, ophelia.ruotaSinistra)
-    elif data.data == Command.RIGHT.value:
-        ophelia.control_movement(data, ophelia.ruotaDestra)
-    elif data.data == Command.STOP.value:
-        if Movement.dataOld == data.data or Movement.dataOld == Command.DEFAULT.value:
-            Movement.dataOld = Command.DEFAULT.value
+def process_command(movement):
+    command = Command(movement.data)
+    if command == Command.FOREWARD:
+        robot.control_movement(command, robot.avanti)
+    elif command == Command.BACKWARD:
+        robot.control_movement(command, robot.indietro)
+    elif command == Command.LEFT:
+        robot.control_movement(command, robot.ruotaSinistra)
+    elif command == Command.RIGHT:
+        robot.control_movement(command, robot.ruotaDestra)
+    elif command == Command.STOP:
+        if robot.old_cmd == command or robot.old_cmd == Command.DEFAULT:
+            robot.old_cmd = Command.DEFAULT
         else:
-            ophelia.to_default_position()
+            robot.to_default_position()
+
+
+if __name__ == '__main__':
+    rospy.init_node('joint_state_publisher')
+    rate = rospy.Rate(50)
+
+    pub = rospy.Publisher(name='/joint_states',
+                          data_class=JointState,
+                          queue_size=1)
+
+    robot = Movement()
+    robot.alza()
+
+    rospy.Subscriber(name='/discrete_movement',
+                     data_class=String,
+                     callback=process_command,
+                     queue_size=1)
+
+    rospy.spin()
