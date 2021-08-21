@@ -2,6 +2,7 @@
 
 from enum import Enum
 
+
 class Command(Enum):
     FOREWARD = "foreward"
     BACKWARD = "backward"

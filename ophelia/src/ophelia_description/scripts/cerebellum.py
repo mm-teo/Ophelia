@@ -12,20 +12,20 @@ from movements import Command
 state = None
 discrete_mov = None
 
-# TODO Quando odometria bassa => gestire auto move
+
 class CerebellumState:
     __slots__ = 'auto_move', 'obstacled', 'goal_reached', \
-                'next_pose', 'current_pose', 'odom_status'
+                'next_pose', 'current_pose', 'odom_quality'
 
     def __init__(self,
                  auto_move=False,
                  obstacled=True,
                  goal_reached=False,
-                 odom_status=0):
+                 odom_quality=0):
         self.auto_move = auto_move
         self.obstacled = obstacled
         self.goal_reached = goal_reached
-        self.odom_status = odom_status
+        self.odom_quality = odom_quality
         th = threading.Thread(target=self.cycle)
         th.daemon = True
         th.start()
@@ -45,22 +45,23 @@ class CerebellumState:
     def set_goal_reached(self, goal_reached):
         self.goal_reached = goal_reached
 
-    def next_pose(self, next_pose):
+    def set_next_pose(self, next_pose):
         self.next_pose = next_pose
 
-    def current_pose(self, odom):
+    def set_current_pose(self, odom):
         self.current_pose = odom.pose.pose
 
-    def set_odom_status(self, odom_info):
-        self.odom_status = odom_info.inliers
+    def set_odom_quality(self, odom_info):
+        self.odom_quality = odom_info.inliers
 
     def cycle(self):
         while True:
-            time.sleep(1)
+            time.sleep(0.5)
             if self.auto_move and not self.obstacled and not self.goal_reached:
                 self.update_direction()
             elif self.goal_reached:
-                self.next_pose(None)
+                self.set_next_pose(None)
+                self.set_goal_reached(False)
 
     def update_direction(self):
         pass
@@ -75,17 +76,17 @@ def main():
 
     rospy.Subscriber(name='/rtabmap/odom',
                      data_class=Odometry,
-                     callback=state.current_pose,
+                     callback=state.set_current_pose,
                      queue_size=1)
 
     rospy.Subscriber(name='/rtabmap/odom_info_lite',
                      data_class=OdomInfo,
-                     callback=state.set_odom_status,
+                     callback=state.set_odom_quality,
                      queue_size=1)
 
     rospy.Subscriber(name='/rtabmap/goal_out',
                      data_class=PoseStamped,
-                     callback=state.next_pose,
+                     callback=state.set_next_pose,
                      queue_size=1)
 
     rospy.Subscriber(name='/rtabmap/goal_reached',
