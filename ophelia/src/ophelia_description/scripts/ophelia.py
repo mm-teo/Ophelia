@@ -1,318 +1,91 @@
 #! /usr/bin/env python
 
 import rospy
-import math
-from traiettoria import Cinematica
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Header, String
+
+import os
+import math
+import time
+from ctypes import CDLL, c_float, Structure, c_int, \
+    pointer as pt, \
+    POINTER as PT
+
+from traiettoria import Cinematica
 from movements import Command
 
 
+class Coordinates(Structure):
+    _fields_ = [('firstStep', PT(c_int)),
+                ('x', PT(c_float)), ('y', PT(c_float)),
+                ('x1', PT(c_float)), ('y1', PT(c_float)), ('z1', PT(c_float)),
+                ('x2', PT(c_float)), ('y2', PT(c_float)), ('z2', PT(c_float)),
+                ('z', PT(c_float)), ('z3', PT(c_float))
+                ]
+
+
 class Movement:
-    __slots__ = 'old_cmd'
+    __slots__ = 'old_cmd', 'x', 'y', 'z', \
+                'x1', 'x2', 'y1', 'y2', 'z1', 'z2', \
+                'first_step', \
+                'c_alza', 'c_avanti', 'c_avanti_uscita'
 
-    def __init__(self):
+    def __init__(self, x=135.0, y=0.0, z=-31.0, first_step=1):
         self.old_cmd = Command.DEFAULT
-
-    # def posizione base
-    x = 135.0
-    y = 0.0
-    z = -31.0
+        self.x = x
+        self.x1 = x
+        self.x2 = x
+        self.y = y
+        self.y1 = y
+        self.y2 = y
+        self.z = z
+        self.z1 = z
+        self.z2 = z
+        self.z3 = z
+        self.first_step = first_step
+        self.c_alza = hexapode_lib.alza
+        self.c_avanti = hexapode_lib.avanti
+        self.c_avanti_uscita = hexapode_lib.avantiUscita
 
     move = JointState()
     braccio1 = Cinematica()
 
-    x1 = x
-    x2 = x
-    z1 = z
-    z2 = z
-    y1 = y
-    y2 = y
+    def get_coord(self):
+        return Coordinates(
+            pt(c_int(self.first_step)),
+            pt(c_float(self.x)), pt(c_float(self.y)),
+            pt(c_float(self.x1)), pt(c_float(self.y1)), pt(c_float(self.z1)),
+            pt(c_float(self.x2)), pt(c_float(self.y2)), pt(c_float(self.z2)),
+            pt(c_float(self.z)), pt(c_float(self.z3)))
 
-    dx_a_1 = 0
-    dx_f_1 = 0
-    dx_t_1 = 0
-    dx_a_2 = 0
-    dx_f_2 = 0
-    dx_t_2 = 0
-    dx_a_3 = 0
-    dx_f_3 = 0
-    dx_t_3 = 0
-    sx_a_1 = 0
-    sx_f_1 = 0
-    sx_t_1 = 0
-    sx_a_2 = 0
-    sx_f_2 = 0
-    sx_t_2 = 0
-    sx_a_3 = 0
-    sx_f_3 = 0
-    sx_t_3 = 0
+    def set_coord(self, new_coord):
+        print(new_coord.firstStep.contents.value)
+        self.first_step = new_coord.firstStep.contents.value
+        self.x = new_coord.x.contents.value
+        self.y = new_coord.y.contents.value
+        self.x1 = new_coord.x1.contents.value
+        self.y1 = new_coord.y1.contents.value
+        self.z1 = new_coord.z1.contents.value
+        self.x2 = new_coord.x2.contents.value
+        self.y2 = new_coord.y2.contents.value
+        self.z2 = new_coord.z2.contents.value
+        self.z = new_coord.z.contents.value
+        self.z3 = new_coord.z3.contents.value
 
-    firstStep = 1
-
-    def moving(self):
-        Movement.move.header = Header()
-        Movement.move.name = ['anca_dx_1_joint', 'femore_dx_1_joint',
-                              'tibia_dx_1_joint', 'anca_dx_2_joint',
-                              'femore_dx_2_joint', 'tibia_dx_2_joint',
-                              'anca_dx_3_joint', 'femore_dx_3_joint',
-                              'tibia_dx_3_joint', 'anca_sx_1_joint',
-                              'femore_sx_1_joint', 'tibia_sx_1_joint',
-                              'anca_sx_2_joint', 'femore_sx_2_joint',
-                              'tibia_sx_2_joint', 'anca_sx_3_joint',
-                              'femore_sx_3_joint', 'tibia_sx_3_joint']
-
-        Movement.move.position = (Movement.dx_a_1, Movement.dx_f_1,
-                                  Movement.dx_t_1, Movement.dx_a_2,
-                                  Movement.dx_f_2, Movement.dx_t_2,
-                                  Movement.dx_a_3, Movement.dx_f_3,
-                                  Movement.dx_t_3, Movement.sx_a_1,
-                                  Movement.sx_f_1, Movement.sx_t_1,
-                                  Movement.sx_a_2, Movement.sx_f_2,
-                                  Movement.sx_t_2, Movement.sx_a_3,
-                                  Movement.sx_f_3, Movement.sx_t_3)
-
-        Movement.move.velocity = []
-        Movement.move.effort = []
-        Movement.move.header.stamp = rospy.Time.now()
-
-    def pubb(self):
-        pub.publish(Movement.move)
-        rate.sleep()
+    def alza(self):
+        coord = self.get_coord()
+        self.c_alza(coord)
+        self.set_coord(coord)
 
     def avanti(self):
-        Movement.z3 = Movement.z
-        if Movement.firstStep == 1:
-            while Movement.z3 < -100:
-                # d=right a=coxa, f=femur, t=tibia
-                Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                    Movement.x, Movement.y, Movement.z3)
-                Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                    Movement.x, Movement.y, Movement.z3)
-                Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                    Movement.x, Movement.y, Movement.z3)
-
-                Movement.sx_a_1 = Movement.dx_a_2
-                Movement.sx_f_1 = -Movement.dx_f_2
-                Movement.sx_t_1 = -Movement.dx_t_2
-
-                Movement.sx_a_3 = Movement.dx_a_2
-                Movement.sx_f_3 = -Movement.dx_f_2
-                Movement.sx_t_3 = -Movement.dx_t_2
-
-                self.moving()
-                Movement.z3 = Movement.z3+1
-                self.pubb()
-
-        Movement.firstStep = 0
-        Movement.z1 = Movement.z3
-        Movement.z2 = Movement.z3
-
-        while Movement.y > -40:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y1, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y1, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y1, Movement.z)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z1)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z1)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z1)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                -Movement.x2, Movement.y1, Movement.z2)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    -Movement.x2, Movement.y1, Movement.z2)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    -Movement.x2, Movement.y1, Movement.z2)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x, Movement.y, Movement.z)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x, Movement.y, Movement.z)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x, Movement.y, Movement.z)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                -Movement.x1, Movement.y1, Movement.z2)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    -Movement.x1, Movement.y1, Movement.z2)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    -Movement.x1, Movement.y1, Movement.z2)
-
-            self.moving()
-            Movement.y = Movement.y-1
-            Movement.x1 = Movement.x1-(1/math.sqrt(2))
-            Movement.x2 = Movement.x2+(1/math.sqrt(2))
-            Movement.y1 = -Movement.x1+135
-            Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
-            Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            self.pubb()
-
-        while Movement.y < 40:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y1, Movement.z2)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y1, Movement.z2)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y1, Movement.z2)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, Movement.y1, Movement.z2)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z2)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z2)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                -Movement.x2, Movement.y1, Movement.z)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    -Movement.x2, Movement.y1, Movement.z)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    -Movement.x2, Movement.y1, Movement.z)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x, Movement.y, Movement.z1)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x, Movement.y, Movement.z1)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x, Movement.y, Movement.z1)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                -Movement.x1, Movement.y1, Movement.z)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    -Movement.x1, Movement.y1, Movement.z)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    -Movement.x1, Movement.y1, Movement.z)
-
-            self.moving()
-            Movement.y = Movement.y+1
-            Movement.x1 = Movement.x1+(1/math.sqrt(2))
-            Movement.x2 = Movement.x2-(1/math.sqrt(2))
-            Movement.y1 = -Movement.x1+135
-            Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
-            Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            self.pubb()
+        coord = self.get_coord()
+        self.c_avanti(coord)
+        self.set_coord(coord)
 
     def avantiUscita(self):
-        Movement.firstStep = 1
-        while Movement.y > 0:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x1, Movement.y1, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x1, Movement.y1, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x1, Movement.y1, Movement.z)
-
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z1)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z1)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z1)
-
-            Movement.dx_a_3 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_f_3 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x2, Movement.y1, Movement.z)
-            Movement.dx_t_3 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x2, Movement.y1, Movement.z)
-
-            Movement.sx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                -Movement.x2, Movement.y1, Movement.z2)
-            Movement.sx_f_1 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    -Movement.x2, Movement.y1, Movement.z2)
-            Movement.sx_t_1 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    -Movement.x2, Movement.y1, Movement.z2)
-
-            Movement.sx_a_2 = - \
-                Movement.braccio1.calcoloIK_joint1(
-                    Movement.x, Movement.y, Movement.z)
-            Movement.sx_f_2 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    Movement.x, Movement.y, Movement.z)
-            Movement.sx_t_2 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    Movement.x, Movement.y, Movement.z)
-
-            Movement.sx_a_3 = Movement.braccio1.calcoloIK_joint1(
-                -Movement.x1, Movement.y1, Movement.z2)
-            Movement.sx_f_3 = - \
-                Movement.braccio1.calcoloIK_joint2(
-                    -Movement.x1, Movement.y1, Movement.z2)
-            Movement.sx_t_3 = - \
-                Movement.braccio1.calcoloIK_joint3(
-                    -Movement.x1, Movement.y1, Movement.z2)
-
-            self.moving()
-            Movement.y = Movement.y-1
-            Movement.x1 = Movement.x1-(1/math.sqrt(2))
-            Movement.x2 = Movement.x2+(1/math.sqrt(2))
-            Movement.y1 = -Movement.x1+135
-            Movement.z1 = -(Movement.y*Movement.y*0.01875+100)
-            Movement.z2 = -0.0375*math.pow(Movement.x1-135, 2)-100
-            self.pubb()
-
-        while Movement.z2 > -130:
-            # d=right a=coxa, f=femur, t=tibia
-            Movement.dx_a_2 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z2)
-            Movement.dx_f_2 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z2)
-            Movement.dx_t_2 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z2)
-
-            Movement.sx_a_1 = Movement.dx_a_2
-            Movement.sx_f_1 = -Movement.dx_f_2
-            Movement.sx_t_1 = -Movement.dx_t_2
-
-            Movement.sx_a_3 = Movement.dx_a_2
-            Movement.sx_f_3 = -Movement.dx_f_2
-            Movement.sx_t_3 = -Movement.dx_t_2
-
-            self.moving()
-            Movement.z2 = Movement.z2-1
-            self.pubb()
+        coord = self.get_coord()
+        self.c_avanti_uscita(coord)
+        self.set_coord(coord)
 
     def indietro(self):
         Movement.z3 = Movement.z
@@ -546,40 +319,6 @@ class Movement:
 
             self.moving()
             Movement.z2 = Movement.z2-1
-            self.pubb()
-
-    def alza(self):
-        while Movement.z > -130:
-            # destra destri a=anca, f=femore, t=tibia
-            Movement.dx_a_1 = Movement.braccio1.calcoloIK_joint1(
-                Movement.x, Movement.y, Movement.z)
-            Movement.dx_f_1 = Movement.braccio1.calcoloIK_joint2(
-                Movement.x, Movement.y, Movement.z)
-            Movement.dx_t_1 = Movement.braccio1.calcoloIK_joint3(
-                Movement.x, Movement.y, Movement.z)
-
-            Movement.dx_a_2 = Movement.dx_a_1
-            Movement.dx_f_2 = Movement.dx_f_1
-            Movement.dx_t_2 = Movement.dx_t_1
-
-            Movement.dx_a_3 = Movement.dx_a_1
-            Movement.dx_f_3 = Movement.dx_f_1
-            Movement.dx_t_3 = Movement.dx_t_1
-
-            Movement.sx_a_1 = Movement.dx_a_1
-            Movement.sx_f_1 = -Movement.dx_f_1
-            Movement.sx_t_1 = -Movement.dx_t_1
-
-            Movement.sx_a_2 = Movement.dx_a_1
-            Movement.sx_f_2 = -Movement.dx_f_1
-            Movement.sx_t_2 = -Movement.dx_t_1
-
-            Movement.sx_a_3 = Movement.dx_a_1
-            Movement.sx_f_3 = -Movement.dx_f_1
-            Movement.sx_t_3 = -Movement.dx_t_1
-
-            self.moving()
-            Movement.z = Movement.z-1
             self.pubb()
 
     def destra(self):
@@ -1590,20 +1329,20 @@ def process_command(movement):
             robot.to_default_position()
 
 
+lib_path = os.environ['HEXALIB_PATH']
+hexapode_lib = CDLL(lib_path)
 if __name__ == '__main__':
-    rospy.init_node('joint_state_publisher')
-    rate = rospy.Rate(50)
-
-    pub = rospy.Publisher(name='/joint_states',
-                          data_class=JointState,
-                          queue_size=1)
+    hexapode_lib.initPublisher()
+    rospy.init_node('joint_state_interface')
 
     robot = Movement()
+    time.sleep(0.1)  # Necessary: Cpp too fast
     robot.alza()
 
-    rospy.Subscriber(name='/discrete_movement',
+    rospy.Subscriber(name='/keyboard_command',
                      data_class=String,
                      callback=process_command,
                      queue_size=1)
 
     rospy.spin()
+    hexapode_lib.shutdownPublisher()

@@ -9,6 +9,16 @@ Real Sense D435: *Tested* \
 kinect xbox One: *Tested* (but too heavy)\
 kinect xbox 360: *Not Tested*
 
+# General
+There is a small C++ library to move the hexapode faster.\
+To compile:
+```
+cd $(HERE_PROJECT_FOLDER)/ophelia/src/ophelia_description/scripts
+
+g++ --shared HexaMove.cpp -o libhexamove.so -Wall -std=c++14 -fPIC -I /opt/ros/melodic/include/ -L /opt/ros/melodic/lib -Wl,-rpath,/opt/ros/melodic/lib -lroscpp -lrosconsole -lroscpp_serialization -lrostime
+```
+The compilation takes few seconds
+
 # First approach
 
 [rrt_exploration](http://wiki.ros.org/rrt_exploration)\

@@ -18,7 +18,9 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
   <node pkg="ophelia_description" type="keyboard_controller.py" name="keyboard_talker" output="screen" />
-  <node pkg="ophelia_description" type="check_distance.py" args="--distance-threshold 201 --stop-ratio 0.2" name="distance_checker" output="screen" /> 
-  <node pkg="ophelia_description" type="ophelia.py" name="ophelia" output="screen" />
+  <node pkg="ophelia_description" type="check_distance.py" args="--distance-threshold 201 --stop-ratio 0.2" name="distance_checker" output="screen" />
+  <node pkg="ophelia_description" type="ophelia.py" name="ophelia" output="screen" >
+    <env name="HEXALIB_PATH" value="$(find ophelia_description)/scripts/libhexamove.so"/>
+  </node>
 
 </launch>

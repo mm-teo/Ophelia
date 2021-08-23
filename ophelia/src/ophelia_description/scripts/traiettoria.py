@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import rospy
 from math import pow, sqrt, atan, asin, acos, pi
 
 
