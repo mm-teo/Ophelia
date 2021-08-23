@@ -23,4 +23,6 @@
     <env name="HEXALIB_PATH" value="$(find ophelia_description)/scripts/libhexamove.so"/>
   </node>
 
+  <node pkg="ophelia_description" type="cerebellum.py" name="cerebellum" output="screen" />
+
 </launch>

@@ -20,29 +20,26 @@ def talker(msg):
 def on_press(key):
     try:
         if format(key.char) == "w":
-            rospy.loginfo("avanti")
+            rospy.loginfo("Foreward")
             talker(Command.FOREWARD.value)
         elif format(key.char) == "s":
-            print("indietro")
+            print("Backward")
             talker(Command.BACKWARD.value)
         elif format(key.char) == "a":
-            print("ruota sinistra")
+            print("Left rotation")
             talker(Command.LEFT.value)
         elif format(key.char) == "d":
-            print("ruota destra")
+            print("Right rotation")
             talker(Command.RIGHT.value)
         elif format(key.char) == "z":
-            print("stop")
+            print("Stop")
             talker(Command.STOP.value)
-        elif format(key.char) == "d":
-            print("ruota destra")
-            talker(Command.RIGHT.value)
         elif format(key.char) == "m":
-            print("ruota destra")
+            print("Changing mode")
             talker(Command.SWITCH_MODE.value)
 
     except AttributeError:
-        print('special key {0} pressed'.format(key))
+        print('Special key {0} pressed'.format(key))
 
 
 def on_release(key):
