@@ -21,7 +21,3 @@ Before starting the program (with bash):
 Start the program:
 
 `roslaunch ophelia_description display.launch`
-
-To control the robot, in another shell inside the repository:
-
-`python ophelia/src/ophelia_description/scripts/ophelia_main2.py`
