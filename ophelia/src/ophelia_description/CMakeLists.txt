@@ -1,14 +1,35 @@
+################################################################################
+# Set minimum required version of cmake, project name and compile options
+################################################################################
 cmake_minimum_required(VERSION 2.8.3)
-
 project(ophelia_description)
 
-find_package(catkin REQUIRED)
+################################################################################
+# Find catkin packages and libraries for catkin and system dependencies
+################################################################################
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  sensor_msgs
+)
 
-catkin_package()
+################################################################################
+# Declare catkin specific configuration to be passed to dependent projects
+################################################################################
+catkin_package(
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs
+)
 
-find_package(roslaunch)
+################################################################################
+# Build
+################################################################################
+include_directories(${catkin_INCLUDE_DIRS})
 
-foreach(dir config launch meshes urdf)
-	install(DIRECTORY ${dir}/
-		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
-endforeach(dir)
+add_library(hexamove SHARED
+  src/HexaMove.cpp
+)
+
+set_target_properties(hexamove PROPERTIES VERSION 1.0.0)
+set_target_properties(hexamove PROPERTIES SOVERSION 1)
+
+target_link_libraries(hexamove ${catkin_LIBRARIES})

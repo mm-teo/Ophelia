@@ -3,9 +3,8 @@
 import rospy
 from std_msgs.msg import String
 
-import os
-import time
-from ctypes import CDLL, c_float, Structure, c_int, \
+from time import sleep
+from ctypes import CDLL, c_float, c_int, Structure, \
     pointer as pt, \
     POINTER as PT
 
@@ -148,14 +147,13 @@ def process_command(movement):
             robot.to_default_position()
 
 
-lib_path = os.environ['HEXALIB_PATH']
-hexapode_lib = CDLL(lib_path)
+hexapode_lib = CDLL('libhexamove.so')
 if __name__ == '__main__':
     hexapode_lib.initPublisher()
     rospy.init_node('joint_state_interface')
 
     robot = Movement()
-    time.sleep(0.1)  # Necessary: Cpp too fast
+    sleep(0.1)  # Necessary: Cpp too fast
     robot.alza()
 
     rospy.Subscriber(name='/discrete_movement',
@@ -163,5 +161,8 @@ if __name__ == '__main__':
                      callback=process_command,
                      queue_size=1)
 
-    rospy.spin()
+    try:
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        print('Stopping ophelia')
     hexapode_lib.shutdownPublisher()

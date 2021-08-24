@@ -6,15 +6,14 @@ from std_msgs.msg import String
 from pynput import keyboard
 
 
-pub = rospy.Publisher('keyboard_command', String, queue_size=1)
-
-rospy.init_node('keyboard_talker', anonymous=True)
-rate = rospy.Rate(50)
+rospy.init_node(name='keyboard_talker')
+pub = rospy.Publisher(name='/keyboard_command',
+                      data_class=String,
+                      queue_size=1)
 
 
 def talker(msg):
     pub.publish(msg)
-    rate.sleep()
 
 
 def on_press(key):
@@ -23,23 +22,23 @@ def on_press(key):
             rospy.loginfo("Foreward")
             talker(Command.FOREWARD.value)
         elif format(key.char) == "s":
-            print("Backward")
+            rospy.loginfo("Backward")
             talker(Command.BACKWARD.value)
         elif format(key.char) == "a":
-            print("Left rotation")
+            rospy.loginfo("Left rotation")
             talker(Command.LEFT.value)
         elif format(key.char) == "d":
-            print("Right rotation")
+            rospy.loginfo("Right rotation")
             talker(Command.RIGHT.value)
         elif format(key.char) == "z":
-            print("Stop")
+            rospy.loginfo("Stop")
             talker(Command.STOP.value)
         elif format(key.char) == "m":
-            print("Changing mode")
+            rospy.loginfo("Changing mode")
             talker(Command.SWITCH_MODE.value)
 
     except AttributeError:
-        print('Special key {0} pressed'.format(key))
+        rospy.loginfo('Special key {0} pressed'.format(key))
 
 
 def on_release(key):
@@ -47,6 +46,7 @@ def on_release(key):
         return False
 
 
-while not rospy.is_shutdown():
-    with keyboard.Listener(on_press=on_press, on_release=on_release) as listen:
-        listen.join()
+listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+listener.start()
+
+rospy.spin()
