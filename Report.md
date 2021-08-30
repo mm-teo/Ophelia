@@ -7,7 +7,7 @@ ROS: Melodic
 
 Real Sense D435: *Tested* \
 kinect xbox One: *Tested* (but too heavy)\
-kinect xbox 360: *Not Tested*
+kinect xbox 360: *Tested* [reference link](https://www.hackster.io/dmitrywat/rgb-d-slam-with-kinect-on-raspberry-pi-4-ros-melodic-ace795)
 
 # First approach
 
@@ -72,6 +72,8 @@ rtabmap-databaseViewer ~/.ros/rtabmap.db
 * contiamo solo i pixel con valore parametrico (>200), se questi sono più di una certa ratio parametrica, allora c'è un ostacolo.
 altrimenti non vi è un ostacolo.
 * We fix and generate the specific comand to be able to move the robot
+
+
 
 # TODO list
 
