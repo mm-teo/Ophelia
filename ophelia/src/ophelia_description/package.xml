@@ -19,6 +19,8 @@ for ophelia_description robot</p>
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
+
+  <exec_depend>python-pybind11</exec_depend> 
   <export>
     <architecture_independent />
   </export>

@@ -3,113 +3,46 @@
 import rospy
 from std_msgs.msg import String
 
-from time import sleep
-from ctypes import CDLL, c_float, c_int, Structure, \
-    pointer as pt, \
-    POINTER as PT
+import sys
+from os.path import dirname
+sys.path.append(dirname(dirname(dirname(dirname(sys.argv[0]))))+'/devel/lib')
 
-from movements import Command
-
-
-class Coordinates(Structure):
-    _fields_ = [('firstStep', PT(c_int)),
-                ('x', PT(c_float)), ('y', PT(c_float)),
-                ('x1', PT(c_float)), ('y1', PT(c_float)), ('z1', PT(c_float)),
-                ('x2', PT(c_float)), ('y2', PT(c_float)), ('z2', PT(c_float)),
-                ('z', PT(c_float)), ('z3', PT(c_float))
-                ]
+from movements import Command  # noqa
+import hexamove as hxmove  # noqa
 
 
 class Movement:
-    __slots__ = 'old_cmd', 'x', 'y', 'z', \
-                'x1', 'x2', 'y1', 'y2', 'z1', 'z2', \
-                'first_step', \
-                'c_alza', 'c_avanti', 'c_avanti_uscita' \
-                'c_indietro', 'c_indietro_uscita', \
-                'c_ruota_destra', 'c_ruota_destra_uscita', \
-                'c_ruota_sinistra', 'c_ruota_sinistra_uscita'
+    __slots__ = 'old_cmd'
 
-    def __init__(self, x=135.0, y=0.0, z=-31.0, first_step=1):
+    def __init__(self):
         self.old_cmd = Command.DEFAULT
-        self.x, self.x1, self.x2 = (x, x, x)
-        self.y, self.y1, self.y2 = (y, y, y)
-        self.z, self.z1, self.z2, self.z3 = (z, z, z, z)
-        self.first_step = first_step
-        self.c_alza = hexapode_lib.alza
-        self.c_avanti = hexapode_lib.avanti
-        self.c_avanti_uscita = hexapode_lib.avantiUscita
-        self.c_indietro = hexapode_lib.indietro
-        self.c_indietro_uscita = hexapode_lib.indietroUscita
-        self.c_ruota_destra = hexapode_lib.destra
-        self.c_ruota_destra_uscita = hexapode_lib.destraUscita
-        self.c_ruota_sinistra = hexapode_lib.sinistra
-        self.c_ruota_sinistra_uscita = hexapode_lib.sinistraUscita
-
-    def get_coord(self):
-        return Coordinates(
-            pt(c_int(self.first_step)),
-            pt(c_float(self.x)), pt(c_float(self.y)),
-            pt(c_float(self.x1)), pt(c_float(self.y1)), pt(c_float(self.z1)),
-            pt(c_float(self.x2)), pt(c_float(self.y2)), pt(c_float(self.z2)),
-            pt(c_float(self.z)), pt(c_float(self.z3)))
-
-    def set_coord(self, new_coord):
-        self.first_step = new_coord.firstStep.contents.value
-        self.x = new_coord.x.contents.value
-        self.y = new_coord.y.contents.value
-        self.x1 = new_coord.x1.contents.value
-        self.y1 = new_coord.y1.contents.value
-        self.z1 = new_coord.z1.contents.value
-        self.x2 = new_coord.x2.contents.value
-        self.y2 = new_coord.y2.contents.value
-        self.z2 = new_coord.z2.contents.value
-        self.z = new_coord.z.contents.value
-        self.z3 = new_coord.z3.contents.value
 
     def alza(self):
-        coord = self.get_coord()
-        self.c_alza(coord)
-        self.set_coord(coord)
+        hxmove.alza()
 
     def avanti(self):
-        coord = self.get_coord()
-        self.c_avanti(coord)
-        self.set_coord(coord)
+        hxmove.avanti()
 
     def avantiUscita(self):
-        coord = self.get_coord()
-        self.c_avanti_uscita(coord)
-        self.set_coord(coord)
+        hxmove.avanti_uscita()
 
     def indietro(self):
-        coord = self.get_coord()
-        self.c_indietro(coord)
-        self.set_coord(coord)
+        hxmove.indietro()
 
     def indietroUscita(self):
-        coord = self.get_coord()
-        self.c_indietro_uscita(coord)
-        self.set_coord(coord)
+        hxmove.indietro_uscita()
 
     def ruotaDestra(self):
-        coord = self.get_coord()
-        self.c_ruota_destra(coord)
-        self.set_coord(coord)
+        hxmove.ruota_destra()
 
     def ruotaDestraUscita(self):
-        coord = self.get_coord()
-        self.c_ruota_destra_uscita(coord)
-        self.set_coord(coord)
+        hxmove.ruota_destra_uscita()
 
     def ruotaSinistra(self):
-        coord = self.get_coord()
-        self.c_ruota_sinistra(coord)
-        self.set_coord(coord)
+        hxmove.ruota_sinistra()
 
     def ruotaSinistraUscita(self):
-        coord = self.get_coord()
-        self.c_ruota_sinistra_uscita(coord)
-        self.set_coord(coord)
+        hxmove.ruota_sinistra_uscita()
 
     def to_default_position(self):
         if self.old_cmd == Command.BACKWARD:
@@ -147,13 +80,11 @@ def process_command(movement):
             robot.to_default_position()
 
 
-hexapode_lib = CDLL('libhexamove.so')
 if __name__ == '__main__':
-    hexapode_lib.initPublisher()
+    hxmove.init_publisher()
     rospy.init_node('joint_state_interface')
 
     robot = Movement()
-    sleep(0.1)  # Necessary: Cpp too fast
     robot.alza()
 
     rospy.Subscriber(name='/discrete_movement',
@@ -165,4 +96,4 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException:
         print('Stopping ophelia')
-    hexapode_lib.shutdownPublisher()
+    hxmove.shutdown_publisher()

@@ -1,3 +1,5 @@
+#include <pybind11/pybind11.h>
+
 #include <math.h>
 #include <stdio.h>
 
@@ -8,11 +10,11 @@
 
 typedef struct
 {
-	int *firstStep;
-	float *x, *y;
-	float *x1, *y1, *z1;
-	float *x2, *y2, *z2;
-	float *z, *z3;
+	int firstStep;
+	float x, y;
+	float x1, y1, z1;
+	float x2, y2, z2;
+	float z, z3;
 } Coordinates;
 
 typedef struct
@@ -35,6 +37,11 @@ typedef struct
 	float tibia;
 } Joint;
 
+Coordinates coord = {.firstStep=1,
+						.x=135, .y=0,
+					 	.x1=135, .y1=0, .z1=-31,
+					 	.x2=135, .y2=0, .z2=-31,
+					 	.z=-31, .z3=-31};
 Position position;
 Joint joint = {.anca=49.8, .femore=76.2, .tibia=136.4};
 ros::Publisher pub;
@@ -77,132 +84,132 @@ void moving(Position position)
 	rate.sleep();
 }
 
-void avantiPrimaParte(Coordinates coord)
+void avantiPrimaParte()
 {
 	double jointRes[3];
 
-	jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z);
+	jointPosition(jointRes, coord.x1, coord.y1, coord.z);
 	position.joints[0] = jointRes[0];
 	position.joints[1] = jointRes[1];
 	position.joints[2] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z1);
+	jointPosition(jointRes, coord.x, coord.y, coord.z1);
 	position.joints[3] = jointRes[0];
 	position.joints[4] = jointRes[1];
 	position.joints[5] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z);
+	jointPosition(jointRes, coord.x2, coord.y1, coord.z);
 	position.joints[6] = -jointRes[0];
 	position.joints[7] = jointRes[1];
 	position.joints[8] = jointRes[2];
 
-	jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z2);
+	jointPosition(jointRes, -coord.x2, coord.y1, coord.z2);
 	position.joints[9] = jointRes[0];
 	position.joints[10] = -jointRes[1];
 	position.joints[11] = -jointRes[2];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z);
+	jointPosition(jointRes, coord.x, coord.y, coord.z);
 	position.joints[12] = -jointRes[0];
 	position.joints[13] = -jointRes[1];
 	position.joints[14] = -jointRes[2];
 
-	jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z2);
+	jointPosition(jointRes, -coord.x1, coord.y1, coord.z2);
 	position.joints[15] = jointRes[0];
 	position.joints[16] = -jointRes[1];
 	position.joints[17] = -jointRes[2];
 
 	moving(position);
-	*coord.y = *coord.y-1;
-	*coord.x1 = *coord.x1-(1/sqrt(2));
-	*coord.x2 = *coord.x2+(1/sqrt(2));
-	*coord.y1 = -*coord.x1+135;
-	*coord.z1 = -(*coord.y*(*coord.y)*0.01875+100);
-	*coord.z2 = -0.0375*pow(*coord.x1-135, 2)-100;
+	coord.y = coord.y-1;
+	coord.x1 = coord.x1-(1/sqrt(2));
+	coord.x2 = coord.x2+(1/sqrt(2));
+	coord.y1 = -coord.x1+135;
+	coord.z1 = -(coord.y*(coord.y)*0.01875+100);
+	coord.z2 = -0.0375*pow(coord.x1-135, 2)-100;
 }
 
-void secondaParteAvantiIndietro(Coordinates coord)
+void secondaParteAvantiIndietro()
 {
 	double jointRes[3];
 
-	jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z2);
+	jointPosition(jointRes, coord.x1, coord.y1, coord.z2);
 	position.joints[0] = jointRes[0];
 	position.joints[1] = jointRes[1];
 	position.joints[2] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z);
+	jointPosition(jointRes, coord.x, coord.y, coord.z);
 	position.joints[3] = jointRes[0];
 	position.joints[4] = jointRes[1];
 	position.joints[5] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z2);
+	jointPosition(jointRes, coord.x2, coord.y1, coord.z2);
 	position.joints[6] = -jointRes[0];
 	position.joints[7] = jointRes[1];
 	position.joints[8] = jointRes[2];
 
-	jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z);
+	jointPosition(jointRes, -coord.x2, coord.y1, coord.z);
 	position.joints[9] = jointRes[0];
 	position.joints[10] = -jointRes[1];
 	position.joints[11] = -jointRes[2];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z1);
+	jointPosition(jointRes, coord.x, coord.y, coord.z1);
 	position.joints[12] = -jointRes[0];
 	position.joints[13] = -jointRes[1];
 	position.joints[14] = -jointRes[2];
 
-	jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z);
+	jointPosition(jointRes, -coord.x1, coord.y1, coord.z);
 	position.joints[15] = jointRes[0];
 	position.joints[16] = -jointRes[1];
 	position.joints[17] = -jointRes[2];
 }
 
-void indietroPrimaParte(Coordinates coord)
+void indietroPrimaParte()
 {
 	double jointRes[3];
 
-	jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z);
+	jointPosition(jointRes, coord.x1, coord.y1, coord.z);
 	position.joints[0] = jointRes[0];
 	position.joints[1] = jointRes[1];
 	position.joints[2] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x, -*coord.y, *coord.z1);
+	jointPosition(jointRes, coord.x, -coord.y, coord.z1);
 	position.joints[3] = jointRes[0];
 	position.joints[4] = jointRes[1];
 	position.joints[5] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z);
+	jointPosition(jointRes, coord.x2, coord.y1, coord.z);
 	position.joints[6] = -jointRes[0];
 	position.joints[7] = jointRes[1];
 	position.joints[8] = jointRes[2];
 
-	jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z2);
+	jointPosition(jointRes, -coord.x2, coord.y1, coord.z2);
 	position.joints[9] = jointRes[0];
 	position.joints[10] = -jointRes[1];
 	position.joints[11] = -jointRes[2];
 
-	jointPosition(jointRes, *coord.x, -*coord.y, *coord.z);
+	jointPosition(jointRes, coord.x, -coord.y, coord.z);
 	position.joints[12] = -jointRes[0];
 	position.joints[13] = -jointRes[1];
 	position.joints[14] = -jointRes[2];
 
-	jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z2);
+	jointPosition(jointRes, -coord.x1, coord.y1, coord.z2);
 	position.joints[15] = jointRes[0];
 	position.joints[16] = -jointRes[1];
 	position.joints[17] = -jointRes[2];
 
 	moving(position);
-	*coord.y = *coord.y-1;
-	*coord.x1 = *coord.x1+(1/sqrt(2));
-	*coord.x2 = *coord.x2-(1/sqrt(2));
-	*coord.y1 = -*coord.x1+135;
-	*coord.z1 = -(*coord.y*(*coord.y)*0.01875+100);
-	*coord.z2 = -0.0375*pow(*coord.x1-135, 2)-100;
+	coord.y = coord.y-1;
+	coord.x1 = coord.x1+(1/sqrt(2));
+	coord.x2 = coord.x2-(1/sqrt(2));
+	coord.y1 = -coord.x1+135;
+	coord.z1 = -(coord.y*(coord.y)*0.01875+100);
+	coord.z2 = -0.0375*pow(coord.x1-135, 2)-100;
 }
 
-void sinistraDestraFirstStep(Coordinates coord)
+void sinistraDestraFirstStep()
 {
 	double jointRes[3];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z3);
+	jointPosition(jointRes, coord.x, coord.y, coord.z3);
 	position.joints[0] = jointRes[0];
 	position.joints[1] = jointRes[1];
 	position.joints[2] = jointRes[2];
@@ -216,64 +223,64 @@ void sinistraDestraFirstStep(Coordinates coord)
 	position.joints[14] = -jointRes[2];
 
 	moving(position);
-	*coord.z3 += 1;
+	coord.z3 += 1;
 }
 
-void sinistraPrimoUscita(Coordinates coord)
+void sinistraPrimoUscita()
 {
 	double jointRes[3];
 
-	jointPosition(jointRes, *coord.x1, -*coord.y1, *coord.z2);
+	jointPosition(jointRes, coord.x1, -coord.y1, coord.z2);
 	position.joints[0] = jointRes[0];
 	position.joints[1] = jointRes[1];
 	position.joints[2] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z);
+	jointPosition(jointRes, coord.x, coord.y, coord.z);
 	position.joints[3] = jointRes[0];
 	position.joints[4] = jointRes[1];
 	position.joints[5] = jointRes[2];
 
-	jointPosition(jointRes, *coord.x2, -*coord.y1, *coord.z2);
+	jointPosition(jointRes, coord.x2, -coord.y1, coord.z2);
 	position.joints[6] = -jointRes[0];
 	position.joints[7] = jointRes[1];
 	position.joints[8] = jointRes[2];
 
-	jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z);
+	jointPosition(jointRes, -coord.x2, coord.y1, coord.z);
 	position.joints[9] = jointRes[0];
 	position.joints[10] = -jointRes[1];
 	position.joints[11] = -jointRes[2];
 
-	jointPosition(jointRes, *coord.x, -*coord.y, *coord.z1);
+	jointPosition(jointRes, coord.x, -coord.y, coord.z1);
 	position.joints[12] = -jointRes[0];
 	position.joints[13] = -jointRes[1];
 	position.joints[14] = -jointRes[2];
 
-	jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z);
+	jointPosition(jointRes, -coord.x1, coord.y1, coord.z);
 	position.joints[15] = jointRes[0];
 	position.joints[16] = -jointRes[1];
 	position.joints[17] = -jointRes[2];
 
 	moving(position);
-	*coord.y = *coord.y+1;
-	*coord.y1 = *coord.y*1.199;
+	coord.y = coord.y+1;
+	coord.y1 = coord.y*1.199;
 	double b1 = 134.2;
-	double c1 = -36342+pow(*coord.y, 2);
-	*coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
-	*coord.z1 = -0.01849*pow(*coord.y, 2)-80;
-	*coord.z2 = -0.01286*pow(*coord.y1, 2)-80;
+	double c1 = -36342+pow(coord.y, 2);
+	coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
+	coord.z1 = -0.01849*pow(coord.y, 2)-80;
+	coord.z2 = -0.01286*pow(coord.y1, 2)-80;
 	double b2 = 211.2;
-	double c2 = -46656+pow(*coord.y1, 2)+33.6*(*coord.y1);
-	*coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
+	double c2 = -46656+pow(coord.y1, 2)+33.6*(coord.y1);
+	coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
 
-	double c3 = -46656+pow(*coord.y1, 2)-33.6*(*coord.y1);
-	*coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
+	double c3 = -46656+pow(coord.y1, 2)-33.6*(coord.y1);
+	coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
 }
 
-void routaUscitaSecondaParte(Coordinates coord)
+void routaUscitaSecondaParte()
 {
 	double jointRes[3];
 
-	jointPosition(jointRes, *coord.x, *coord.y, *coord.z2);
+	jointPosition(jointRes, coord.x, coord.y, coord.z2);
 	position.joints[0] = jointRes[0];
 	position.joints[1] = jointRes[1];
 	position.joints[2] = jointRes[2];
@@ -287,141 +294,57 @@ void routaUscitaSecondaParte(Coordinates coord)
 	position.joints[14] = -jointRes[2];
 
 	moving(position);
-	*coord.z2 -= 1;
+	coord.z2 -= 1;
 }
 
-extern "C"
+void shutdownPublisher()
 {
-	void shutdownPublisher()
+	ros::shutdown();
+}
+
+void initPublisher()
+{
+	ros::init(std::map<std::string, std::string>(), "joint_state_publisher");
+	ros::NodeHandle n;
+	pub = n.advertise<sensor_msgs::JointState>("/joint_states", 1);
+}
+
+void alza()
+{
+	double dx_aft[3];
+	while (coord.z > -130)
 	{
-		ros::shutdown();
+		jointPosition(dx_aft, coord.x, coord.y, coord.z);
+
+		for (int i=0; i<3; i++)
+		{
+			position.joints[0+i*3] = dx_aft[0];
+			position.joints[1+i*3] = dx_aft[1];
+			position.joints[2+i*3] = dx_aft[2];
+		}
+
+		for (int i=3; i<6; i++)
+		{
+			position.joints[0+i*3] = dx_aft[0];
+			position.joints[1+i*3] = -dx_aft[1];
+			position.joints[2+i*3] = -dx_aft[2];
+		}
+
+		moving(position);
+		coord.z -= 1;
 	}
+}
 
-	void initPublisher()
+void avanti()
+{
+	double jointRes[3];
+
+	coord.z3 = coord.z;
+	if (coord.firstStep == 1)
 	{
-		ros::init(std::map<std::string, std::string>(), "joint_state_publisher");
-		ros::NodeHandle n;
-		pub = n.advertise<sensor_msgs::JointState>("/joint_states", 1);
-	}
-
-	void alza(Coordinates coord)
-	{
-		double dx_aft[3];
-		while (*coord.z > -130)
+		while (coord.z3 < -100)
 		{
-			jointPosition(dx_aft, *coord.x, *coord.y, *coord.z);
-
-			for (int i=0; i<3; i++)
-			{
-				position.joints[0+i*3] = dx_aft[0];
-				position.joints[1+i*3] = dx_aft[1];
-				position.joints[2+i*3] = dx_aft[2];
-			}
-
-			for (int i=3; i<6; i++)
-			{
-				position.joints[0+i*3] = dx_aft[0];
-				position.joints[1+i*3] = -dx_aft[1];
-				position.joints[2+i*3] = -dx_aft[2];
-			}
-
-			moving(position);
-			*coord.z -= 1;
-		}
-	}
-
-	void avanti(Coordinates coord)
-	{
-		double jointRes[3];
-
-		*coord.z3 = *coord.z;
-		if (*coord.firstStep == 1)
-		{
-			while (*coord.z3 < -100)
-			{
-				jointPosition(jointRes, *coord.x, *coord.y, *coord.z3);
-				position.joints[3] = jointRes[0];
-				position.joints[4] = jointRes[1];
-				position.joints[5] = jointRes[2];
-
-				position.joints[9] = jointRes[0];
-				position.joints[10] = -jointRes[1];
-				position.joints[11] = -jointRes[2];
-
-				position.joints[15] = jointRes[0];
-				position.joints[16] = -jointRes[1];
-				position.joints[17] = -jointRes[2];
-
-				moving(position);
-				*coord.z3 += 1;
-			}
-		}
-
-		*coord.firstStep = 0;
-		*coord.z1 = *coord.z3;
-		*coord.z2 = *coord.z3;
-
-		while (*coord.y > -40)
-		{
-			avantiPrimaParte(coord);
-		}
-
-		while (*coord.y < 40)
-		{
-			jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z2);
-			position.joints[0] = jointRes[0];
-			position.joints[1] = jointRes[1];
-			position.joints[2] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z);
-			position.joints[3] = jointRes[0];
-			position.joints[4] = jointRes[1];
-			position.joints[5] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z2);
-			position.joints[6] = -jointRes[0];
-			position.joints[7] = jointRes[1];
-			position.joints[8] = jointRes[2];
-
-			jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z);
-			position.joints[9] = jointRes[0];
-			position.joints[10] = -jointRes[1];
-			position.joints[11] = -jointRes[2];
-
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z1);
-			position.joints[12] = -jointRes[0];
-			position.joints[13] = -jointRes[1];
-			position.joints[14] = -jointRes[2];
-
-			jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z);
-			position.joints[15] = jointRes[0];
-			position.joints[16] = -jointRes[1];
-			position.joints[17] = -jointRes[2];
-
-			moving(position);
-			*coord.y = *coord.y+1;
-			*coord.x1 = *coord.x1+(1/sqrt(2));
-			*coord.x2 = *coord.x2-(1/sqrt(2));
-			*coord.y1 = -*coord.x1+135;
-			*coord.z1 = -(*coord.y*(*coord.y)*0.01875+100);
-			*coord.z2 = -0.0375*pow(*coord.x1-135, 2)-100;
-		}
-	}
-
-
-	void avantiUscita(Coordinates coord)
-	{
-		double jointRes[3];
-
-		*coord.firstStep = 1;
-		while (*coord.y > 0)
-		{
-			avantiPrimaParte(coord);
-		}
-
-		while (*coord.z2 > -130)
-		{
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z2);
+			jointPosition(jointRes, coord.x, coord.y, coord.z3);
 			position.joints[3] = jointRes[0];
 			position.joints[4] = jointRes[1];
 			position.joints[5] = jointRes[2];
@@ -435,373 +358,468 @@ extern "C"
 			position.joints[17] = -jointRes[2];
 
 			moving(position);
-			*coord.z2 -= 1;
+			coord.z3 += 1;
 		}
 	}
 
-	void indietro(Coordinates coord)
+	coord.firstStep = 0;
+	coord.z1 = coord.z3;
+	coord.z2 = coord.z3;
+
+	while (coord.y > -40)
 	{
-		double jointRes[3];
+		avantiPrimaParte();
+	}
 
-		*coord.z3 = *coord.z;
-		if (*coord.firstStep == 1)
+	while (coord.y < 40)
+	{
+		jointPosition(jointRes, coord.x1, coord.y1, coord.z2);
+		position.joints[0] = jointRes[0];
+		position.joints[1] = jointRes[1];
+		position.joints[2] = jointRes[2];
+
+		jointPosition(jointRes, coord.x, coord.y, coord.z);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
+
+		jointPosition(jointRes, coord.x2, coord.y1, coord.z2);
+		position.joints[6] = -jointRes[0];
+		position.joints[7] = jointRes[1];
+		position.joints[8] = jointRes[2];
+
+		jointPosition(jointRes, -coord.x2, coord.y1, coord.z);
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
+
+		jointPosition(jointRes, coord.x, coord.y, coord.z1);
+		position.joints[12] = -jointRes[0];
+		position.joints[13] = -jointRes[1];
+		position.joints[14] = -jointRes[2];
+
+		jointPosition(jointRes, -coord.x1, coord.y1, coord.z);
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
+
+		moving(position);
+		coord.y = coord.y+1;
+		coord.x1 = coord.x1+(1/sqrt(2));
+		coord.x2 = coord.x2-(1/sqrt(2));
+		coord.y1 = -coord.x1+135;
+		coord.z1 = -(coord.y*(coord.y)*0.01875+100);
+		coord.z2 = -0.0375*pow(coord.x1-135, 2)-100;
+	}
+}
+
+
+void avantiUscita()
+{
+	double jointRes[3];
+
+	coord.firstStep = 1;
+	while (coord.y > 0)
+	{
+		avantiPrimaParte();
+	}
+
+	while (coord.z2 > -130)
+	{
+		jointPosition(jointRes, coord.x, coord.y, coord.z2);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
+
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
+
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
+
+		moving(position);
+		coord.z2 -= 1;
+	}
+}
+
+void indietro()
+{
+	double jointRes[3];
+
+	coord.z3 = coord.z;
+	if (coord.firstStep == 1)
+	{
+		while (coord.z3 < -100)
 		{
-			while (*coord.z3 < -100)
-			{
-				jointPosition(jointRes, *coord.x, -*coord.y, *coord.z3);
-				position.joints[3] = jointRes[0];
-				position.joints[4] = jointRes[1];
-				position.joints[5] = jointRes[2];
-
-				position.joints[9] = jointRes[0];
-				position.joints[10] = -jointRes[1];
-				position.joints[11] = -jointRes[2];
-
-				position.joints[15] = jointRes[0];
-				position.joints[16] = -jointRes[1];
-				position.joints[17] = -jointRes[2];
-
-				moving(position);
-				*coord.z3 += 1;
-			}
-		}
-
-		*coord.firstStep = 0;
-		*coord.z1 = *coord.z3;
-		*coord.z2 = *coord.z3;
-
-		while (*coord.y > -40)
-		{
-			indietroPrimaParte(coord);
-		}
-
-		while (*coord.y < 40)
-		{
-			jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z2);
-			position.joints[0] = jointRes[0];
-			position.joints[1] = jointRes[1];
-			position.joints[2] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z);
+			jointPosition(jointRes, coord.x, -coord.y, coord.z3);
 			position.joints[3] = jointRes[0];
 			position.joints[4] = jointRes[1];
 			position.joints[5] = jointRes[2];
 
-			jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z2);
-			position.joints[6] = -jointRes[0];
-			position.joints[7] = jointRes[1];
-			position.joints[8] = jointRes[2];
-
-			jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z);
 			position.joints[9] = jointRes[0];
 			position.joints[10] = -jointRes[1];
 			position.joints[11] = -jointRes[2];
 
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z1);
-			position.joints[12] = -jointRes[0];
-			position.joints[13] = -jointRes[1];
-			position.joints[14] = -jointRes[2];
-
-			jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z);
 			position.joints[15] = jointRes[0];
 			position.joints[16] = -jointRes[1];
 			position.joints[17] = -jointRes[2];
 
 			moving(position);
-			*coord.y = *coord.y+1;
-			*coord.x1 = *coord.x1-(1/sqrt(2));
-			*coord.x2 = *coord.x2+(1/sqrt(2));
-			*coord.y1 = -*coord.x1+135;
-			*coord.z1 = -(*coord.y*(*coord.y)*0.01875+100);
-			*coord.z2 = -0.0375*pow(*coord.x1-135, 2)-100;
+			coord.z3 += 1;
 		}
 	}
 
-	void indietroUscita(Coordinates coord)
+	coord.firstStep = 0;
+	coord.z1 = coord.z3;
+	coord.z2 = coord.z3;
+
+	while (coord.y > -40)
 	{
-		double jointRes[3];
-		
-		*coord.firstStep = 1;
-		while (*coord.y > 0)
-		{
-			indietroPrimaParte(coord);
-		}
-
-		while (*coord.z2 > -130)
-		{
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z2);
-			position.joints[3] = jointRes[0];
-			position.joints[4] = jointRes[1];
-			position.joints[5] = jointRes[2];
-
-			position.joints[9] = jointRes[0];
-			position.joints[10] = -jointRes[1];
-			position.joints[11] = -jointRes[2];
-
-			position.joints[15] = jointRes[0];
-			position.joints[16] = -jointRes[1];
-			position.joints[17] = -jointRes[2];
-
-			moving(position);
-			*coord.z2 -= 1;
-		}
+		indietroPrimaParte();
 	}
 
-	void destra(Coordinates coord)
+	while (coord.y < 40)
 	{
-		double jointRes[3];
+		jointPosition(jointRes, coord.x1, coord.y1, coord.z2);
+		position.joints[0] = jointRes[0];
+		position.joints[1] = jointRes[1];
+		position.joints[2] = jointRes[2];
 
-		*coord.z3 = *coord.z;
-		if (*coord.firstStep == 1)
-		{
-			while (*coord.z3 < -80)
-			{
-				sinistraDestraFirstStep(coord);
-			}
-		}
+		jointPosition(jointRes, coord.x, -coord.y, coord.z);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
 
-		*coord.firstStep = 0;
-		*coord.z1 = *coord.z3;
-		*coord.z2 = *coord.z3;
+		jointPosition(jointRes, coord.x2, coord.y1, coord.z2);
+		position.joints[6] = -jointRes[0];
+		position.joints[7] = jointRes[1];
+		position.joints[8] = jointRes[2];
 
-		while (*coord.y < 52)
-		{
-			jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z2);
-			position.joints[0] = jointRes[0];
-			position.joints[1] = jointRes[1];
-			position.joints[2] = jointRes[2];
+		jointPosition(jointRes, -coord.x2, coord.y1, coord.z);
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
 
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z);
-			position.joints[3] = jointRes[0];
-			position.joints[4] = jointRes[1];
-			position.joints[5] = jointRes[2];
+		jointPosition(jointRes, coord.x, -coord.y, coord.z1);
+		position.joints[12] = -jointRes[0];
+		position.joints[13] = -jointRes[1];
+		position.joints[14] = -jointRes[2];
 
-			jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z2);
-			position.joints[6] = -jointRes[0];
-			position.joints[7] = jointRes[1];
-			position.joints[8] = jointRes[2];
+		jointPosition(jointRes, -coord.x1, coord.y1, coord.z);
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
 
-			jointPosition(jointRes, -*coord.x2, -*coord.y1, *coord.z);
-			position.joints[9] = jointRes[0];
-			position.joints[10] = -jointRes[1];
-			position.joints[11] = -jointRes[2];
-
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z1);
-			position.joints[12] = -jointRes[0];
-			position.joints[13] = -jointRes[1];
-			position.joints[14] = -jointRes[2];
-
-			jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z);
-			position.joints[15] = jointRes[0];
-			position.joints[16] = -jointRes[1];
-			position.joints[17] = -jointRes[2];
-
-			moving(position);
-			*coord.y = *coord.y+1;
-            *coord.y1 = *coord.y*1.199;
-            double b1 = 134.2;
-            double c1 = -36342+pow(*coord.y, 2);
-            *coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
-            *coord.z1 = -0.01849*pow(*coord.y, 2)-80;
-            *coord.z2 = -0.01286*pow(*coord.y1, 2)-80;
-            double b2 = 211.2;
-            double c2 = -46656+pow(*coord.y1, 2)+33.6*(*coord.y1);
-            *coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
-
-            double c3 = -46656+pow(*coord.y1, 2)-33.6*(*coord.y1);
-            *coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
-		}
-
-		while (*coord.y > -52)
-		{
-			jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z);
-			position.joints[0] = jointRes[0];
-			position.joints[1] = jointRes[1];
-			position.joints[2] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z1);
-			position.joints[3] = jointRes[0];
-			position.joints[4] = jointRes[1];
-			position.joints[5] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z);
-			position.joints[6] = -jointRes[0];
-			position.joints[7] = jointRes[1];
-			position.joints[8] = jointRes[2];
-
-			jointPosition(jointRes, -*coord.x2, -*coord.y1, *coord.z2);
-			position.joints[9] = jointRes[0];
-			position.joints[10] = -jointRes[1];
-			position.joints[11] = -jointRes[2];
-
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z);
-			position.joints[12] = -jointRes[0];
-			position.joints[13] = -jointRes[1];
-			position.joints[14] = -jointRes[2];
-
-			jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z2);
-			position.joints[15] = jointRes[0];
-			position.joints[16] = -jointRes[1];
-			position.joints[17] = -jointRes[2];
-
-			moving(position);
-			*coord.y = *coord.y-1;
-            *coord.y1 = *coord.y*1.199;
-            double b1 = 134.2;
-            double c1 = -36342+pow(*coord.y, 2);
-            *coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
-            *coord.z1 = -0.01849*pow(*coord.y, 2)-80;
-            *coord.z2 = -0.01286*pow(*coord.y1, 2)-80;
-            double b2 = 211.2;
-            double c2 = -46656+pow(*coord.y1, 2)+33.6*(*coord.y1);
-            *coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
-
-            double c3 = -46656+pow(*coord.y1, 2)-33.6*(*coord.y1);
-            *coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
-		}
+		moving(position);
+		coord.y = coord.y+1;
+		coord.x1 = coord.x1-(1/sqrt(2));
+		coord.x2 = coord.x2+(1/sqrt(2));
+		coord.y1 = -coord.x1+135;
+		coord.z1 = -(coord.y*(coord.y)*0.01875+100);
+		coord.z2 = -0.0375*pow(coord.x1-135, 2)-100;
 	}
+}
 
-	void destraUscita(Coordinates coord)
+void indietroUscita()
+{
+	double jointRes[3];
+	
+	coord.firstStep = 1;
+	while (coord.y > 0)
 	{
-		double jointRes[3];
-		
-		*coord.firstStep = 1;
-		while (*coord.y < 0)
-		{
-			jointPosition(jointRes, *coord.x1, *coord.y1, *coord.z2);
-			position.joints[0] = jointRes[0];
-			position.joints[1] = jointRes[1];
-			position.joints[2] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z);
-			position.joints[3] = jointRes[0];
-			position.joints[4] = jointRes[1];
-			position.joints[5] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x2, *coord.y1, *coord.z2);
-			position.joints[6] = -jointRes[0];
-			position.joints[7] = jointRes[1];
-			position.joints[8] = jointRes[2];
-
-			jointPosition(jointRes, -*coord.x2, -*coord.y1, *coord.z);
-			position.joints[9] = jointRes[0];
-			position.joints[10] = -jointRes[1];
-			position.joints[11] = -jointRes[2];
-
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z1);
-			position.joints[12] = -jointRes[0];
-			position.joints[13] = -jointRes[1];
-			position.joints[14] = -jointRes[2];
-
-			jointPosition(jointRes, -*coord.x1, -*coord.y1, *coord.z);
-			position.joints[15] = -jointRes[0];
-			position.joints[16] = -jointRes[1];
-			position.joints[17] = -jointRes[2];
-
-			moving(position);
-			*coord.y = *coord.y+1;
-            *coord.y1 = *coord.y*1.199;
-            double b1 = 134.2;
-            double c1 = -36342+pow(*coord.y, 2);
-            *coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
-            *coord.z1 = -0.01849*pow(*coord.y, 2)-80;
-            *coord.z2 = -0.01286*pow(*coord.y1, 2)-80;
-            double b2 = 211.2;
-            double c2 = -46656+pow(*coord.y1, 2)+33.6*(*coord.y1);
-            *coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
-
-            double c3 = -46656+pow(*coord.y1, 2)-33.6*(*coord.y1);
-            *coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
-		}
-
-		while (*coord.z2 > -130)
-		{
-			routaUscitaSecondaParte(coord);
-		}
+		indietroPrimaParte();
 	}
 
-	void sinistra(Coordinates coord)
+	while (coord.z2 > -130)
 	{
-		double jointRes[3];
+		jointPosition(jointRes, coord.x, -coord.y, coord.z2);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
 
-		*coord.z3 = *coord.z;
-		if (*coord.firstStep == 1)
-		{
-			while (*coord.z3 < -80)
-			{
-				sinistraDestraFirstStep(coord);
-			}
-		}
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
 
-		*coord.firstStep = 0;
-		*coord.z1 = *coord.z3;
-		*coord.z2 = *coord.z3;
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
 
-		while (*coord.y < 52)
-		{
-			sinistraPrimoUscita(coord);
-		}
-
-		while (*coord.y > -52)
-		{
-			jointPosition(jointRes, *coord.x1, -*coord.y1, *coord.z);
-			position.joints[0] = jointRes[0];
-			position.joints[1] = jointRes[1];
-			position.joints[2] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x, *coord.y, *coord.z1);
-			position.joints[3] = jointRes[0];
-			position.joints[4] = jointRes[1];
-			position.joints[5] = jointRes[2];
-
-			jointPosition(jointRes, *coord.x2, -*coord.y1, *coord.z);
-			position.joints[6] = -jointRes[0];
-			position.joints[7] = jointRes[1];
-			position.joints[8] = jointRes[2];
-
-			jointPosition(jointRes, -*coord.x2, *coord.y1, *coord.z2);
-			position.joints[9] = jointRes[0];
-			position.joints[10] = -jointRes[1];
-			position.joints[11] = -jointRes[2];
-
-			jointPosition(jointRes, *coord.x, -*coord.y, *coord.z);
-			position.joints[12] = -jointRes[0];
-			position.joints[13] = -jointRes[1];
-			position.joints[14] = -jointRes[2];
-
-			jointPosition(jointRes, -*coord.x1, *coord.y1, *coord.z2);
-			position.joints[15] = jointRes[0];
-			position.joints[16] = -jointRes[1];
-			position.joints[17] = -jointRes[2];
-
-			moving(position);
-			*coord.y = *coord.y-1;
-            *coord.y1 = *coord.y*1.199;
-            double b1 = 134.2;
-            double c1 = -36342+pow(*coord.y, 2);
-            *coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
-            *coord.z1 = -0.01849*pow(*coord.y, 2)-80;
-            *coord.z2 = -0.01286*pow(*coord.y1, 2)-80;
-            double b2 = 211.2;
-            double c2 = -46656+pow(*coord.y1, 2)+33.6*(*coord.y1);
-            *coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
-
-            double c3 = -46656+pow(*coord.y1, 2)-33.6*(*coord.y1);
-            *coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
-		}
+		moving(position);
+		coord.z2 -= 1;
 	}
+}
 
-	void sinistraUscita(Coordinates coord)
+void destra()
+{
+	double jointRes[3];
+
+	coord.z3 = coord.z;
+	if (coord.firstStep == 1)
 	{
-		*coord.firstStep = 1;
-		while (*coord.y < 0)
+		while (coord.z3 < -80)
 		{
-			sinistraPrimoUscita(coord);
-		}
-
-		while (*coord.z2 > -130)
-		{
-			routaUscitaSecondaParte(coord);
+			sinistraDestraFirstStep();
 		}
 	}
+
+	coord.firstStep = 0;
+	coord.z1 = coord.z3;
+	coord.z2 = coord.z3;
+
+	while (coord.y < 52)
+	{
+		jointPosition(jointRes, coord.x1, coord.y1, coord.z2);
+		position.joints[0] = jointRes[0];
+		position.joints[1] = jointRes[1];
+		position.joints[2] = jointRes[2];
+
+		jointPosition(jointRes, coord.x, -coord.y, coord.z);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
+
+		jointPosition(jointRes, coord.x2, coord.y1, coord.z2);
+		position.joints[6] = -jointRes[0];
+		position.joints[7] = jointRes[1];
+		position.joints[8] = jointRes[2];
+
+		jointPosition(jointRes, -coord.x2, -coord.y1, coord.z);
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
+
+		jointPosition(jointRes, coord.x, coord.y, coord.z1);
+		position.joints[12] = -jointRes[0];
+		position.joints[13] = -jointRes[1];
+		position.joints[14] = -jointRes[2];
+
+		jointPosition(jointRes, -coord.x1, coord.y1, coord.z);
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
+
+		moving(position);
+		coord.y = coord.y+1;
+		coord.y1 = coord.y*1.199;
+		double b1 = 134.2;
+		double c1 = -36342+pow(coord.y, 2);
+		coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
+		coord.z1 = -0.01849*pow(coord.y, 2)-80;
+		coord.z2 = -0.01286*pow(coord.y1, 2)-80;
+		double b2 = 211.2;
+		double c2 = -46656+pow(coord.y1, 2)+33.6*(coord.y1);
+		coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
+
+		double c3 = -46656+pow(coord.y1, 2)-33.6*(coord.y1);
+		coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
+	}
+
+	while (coord.y > -52)
+	{
+		jointPosition(jointRes, coord.x1, coord.y1, coord.z);
+		position.joints[0] = jointRes[0];
+		position.joints[1] = jointRes[1];
+		position.joints[2] = jointRes[2];
+
+		jointPosition(jointRes, coord.x, -coord.y, coord.z1);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
+
+		jointPosition(jointRes, coord.x2, coord.y1, coord.z);
+		position.joints[6] = -jointRes[0];
+		position.joints[7] = jointRes[1];
+		position.joints[8] = jointRes[2];
+
+		jointPosition(jointRes, -coord.x2, -coord.y1, coord.z2);
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
+
+		jointPosition(jointRes, coord.x, coord.y, coord.z);
+		position.joints[12] = -jointRes[0];
+		position.joints[13] = -jointRes[1];
+		position.joints[14] = -jointRes[2];
+
+		jointPosition(jointRes, -coord.x1, coord.y1, coord.z2);
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
+
+		moving(position);
+		coord.y = coord.y-1;
+		coord.y1 = coord.y*1.199;
+		double b1 = 134.2;
+		double c1 = -36342+pow(coord.y, 2);
+		coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
+		coord.z1 = -0.01849*pow(coord.y, 2)-80;
+		coord.z2 = -0.01286*pow(coord.y1, 2)-80;
+		double b2 = 211.2;
+		double c2 = -46656+pow(coord.y1, 2)+33.6*(coord.y1);
+		coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
+
+		double c3 = -46656+pow(coord.y1, 2)-33.6*(coord.y1);
+		coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
+	}
+}
+
+void destraUscita()
+{
+	double jointRes[3];
+	
+	coord.firstStep = 1;
+	while (coord.y < 0)
+	{
+		jointPosition(jointRes, coord.x1, coord.y1, coord.z2);
+		position.joints[0] = jointRes[0];
+		position.joints[1] = jointRes[1];
+		position.joints[2] = jointRes[2];
+
+		jointPosition(jointRes, coord.x, -coord.y, coord.z);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
+
+		jointPosition(jointRes, coord.x2, coord.y1, coord.z2);
+		position.joints[6] = -jointRes[0];
+		position.joints[7] = jointRes[1];
+		position.joints[8] = jointRes[2];
+
+		jointPosition(jointRes, -coord.x2, -coord.y1, coord.z);
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
+
+		jointPosition(jointRes, coord.x, coord.y, coord.z1);
+		position.joints[12] = -jointRes[0];
+		position.joints[13] = -jointRes[1];
+		position.joints[14] = -jointRes[2];
+
+		jointPosition(jointRes, -coord.x1, -coord.y1, coord.z);
+		position.joints[15] = -jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
+
+		moving(position);
+		coord.y = coord.y+1;
+		coord.y1 = coord.y*1.199;
+		double b1 = 134.2;
+		double c1 = -36342+pow(coord.y, 2);
+		coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
+		coord.z1 = -0.01849*pow(coord.y, 2)-80;
+		coord.z2 = -0.01286*pow(coord.y1, 2)-80;
+		double b2 = 211.2;
+		double c2 = -46656+pow(coord.y1, 2)+33.6*(coord.y1);
+		coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
+
+		double c3 = -46656+pow(coord.y1, 2)-33.6*(coord.y1);
+		coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
+	}
+
+	while (coord.z2 > -130)
+	{
+		routaUscitaSecondaParte();
+	}
+}
+
+void sinistra()
+{
+	double jointRes[3];
+
+	coord.z3 = coord.z;
+	if (coord.firstStep == 1)
+	{
+		while (coord.z3 < -80)
+		{
+			sinistraDestraFirstStep();
+		}
+	}
+
+	coord.firstStep = 0;
+	coord.z1 = coord.z3;
+	coord.z2 = coord.z3;
+
+	while (coord.y < 52)
+	{
+		sinistraPrimoUscita();
+	}
+
+	while (coord.y > -52)
+	{
+		jointPosition(jointRes, coord.x1, -coord.y1, coord.z);
+		position.joints[0] = jointRes[0];
+		position.joints[1] = jointRes[1];
+		position.joints[2] = jointRes[2];
+
+		jointPosition(jointRes, coord.x, coord.y, coord.z1);
+		position.joints[3] = jointRes[0];
+		position.joints[4] = jointRes[1];
+		position.joints[5] = jointRes[2];
+
+		jointPosition(jointRes, coord.x2, -coord.y1, coord.z);
+		position.joints[6] = -jointRes[0];
+		position.joints[7] = jointRes[1];
+		position.joints[8] = jointRes[2];
+
+		jointPosition(jointRes, -coord.x2, coord.y1, coord.z2);
+		position.joints[9] = jointRes[0];
+		position.joints[10] = -jointRes[1];
+		position.joints[11] = -jointRes[2];
+
+		jointPosition(jointRes, coord.x, -coord.y, coord.z);
+		position.joints[12] = -jointRes[0];
+		position.joints[13] = -jointRes[1];
+		position.joints[14] = -jointRes[2];
+
+		jointPosition(jointRes, -coord.x1, coord.y1, coord.z2);
+		position.joints[15] = jointRes[0];
+		position.joints[16] = -jointRes[1];
+		position.joints[17] = -jointRes[2];
+
+		moving(position);
+		coord.y = coord.y-1;
+		coord.y1 = coord.y*1.199;
+		double b1 = 134.2;
+		double c1 = -36342+pow(coord.y, 2);
+		coord.x = (-b1+sqrt(pow(b1, 2)-(4*c1)))/(2);
+		coord.z1 = -0.01849*pow(coord.y, 2)-80;
+		coord.z2 = -0.01286*pow(coord.y1, 2)-80;
+		double b2 = 211.2;
+		double c2 = -46656+pow(coord.y1, 2)+33.6*(coord.y1);
+		coord.x1 = (-b2+sqrt(pow(b2, 2)-(4*c2)))/(2);
+
+		double c3 = -46656+pow(coord.y1, 2)-33.6*(coord.y1);
+		coord.x2 = (-b2+sqrt(pow(b2, 2)-(4*c3)))/(2);
+	}
+}
+
+void sinistraUscita()
+{
+	coord.firstStep = 1;
+	while (coord.y < 0)
+	{
+		sinistraPrimoUscita();
+	}
+
+	while (coord.z2 > -130)
+	{
+		routaUscitaSecondaParte();
+	}
+}
+
+PYBIND11_MODULE(hexamove, hexaExport) {
+	hexaExport.def("shutdown_publisher", &shutdownPublisher, "Close the publisher");
+	hexaExport.def("init_publisher", &initPublisher, "Init the publisher");
+	hexaExport.def("alza", &alza, "Arise the robot");
+	hexaExport.def("avanti", &avanti, "The robot goes foreward");
+	hexaExport.def("avanti_uscita", &avantiUscita, "The robot returns to standard position from the foreward position");
+	hexaExport.def("indietro", &indietro, "The robot goes backward");
+	hexaExport.def("indietro_uscita", &indietroUscita, "The robot returns to standard position from the backward position");
+	hexaExport.def("ruota_destra", &destra, "The robot goes right");
+	hexaExport.def("ruota_destra_uscita", &destraUscita, "The robot returns to standard position from the right position");
+	hexaExport.def("ruota_sinistra", &sinistra, "The robot goes left");
+	hexaExport.def("ruota_sinistra_uscita", &sinistraUscita, "The robot returns to standard position from the left position");
 }
