@@ -1,6 +1,6 @@
 **/.vscode/
 **/devel
-**.so
+**.so*
 **/build
 **/__pycache_
 **.pyc

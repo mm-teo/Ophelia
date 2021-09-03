@@ -3,12 +3,8 @@
 import rospy
 from std_msgs.msg import String
 
-import sys
-from os.path import dirname
-sys.path.append(dirname(dirname(dirname(dirname(sys.argv[0]))))+'/devel/lib')
-
-from movements import Command  # noqa
-import hexamove as hxmove  # noqa
+from movements import Command
+import hexamove as hxmove
 
 
 class Movement:
