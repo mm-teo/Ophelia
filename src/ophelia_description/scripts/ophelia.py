@@ -19,36 +19,24 @@ class Movement:
     def avanti(self):
         hxmove.avanti()
 
-    def avantiUscita(self):
-        hxmove.avanti_uscita()
-
     def indietro(self):
         hxmove.indietro()
-
-    def indietroUscita(self):
-        hxmove.indietro_uscita()
 
     def ruotaDestra(self):
         hxmove.ruota_destra()
 
-    def ruotaDestraUscita(self):
-        hxmove.ruota_destra_uscita()
-
     def ruotaSinistra(self):
         hxmove.ruota_sinistra()
 
-    def ruotaSinistraUscita(self):
-        hxmove.ruota_sinistra_uscita()
-
     def to_default_position(self):
         if self.old_cmd == Command.BACKWARD:
-            self.indietroUscita()
+            hxmove.indietro_uscita()
         elif self.old_cmd == Command.FOREWARD:
-            self.avantiUscita()
+            hxmove.avanti_uscita()
         elif self.old_cmd == Command.LEFT:
-            self.ruotaSinistraUscita()
+            hxmove.ruota_sinistra_uscita()
         elif self.old_cmd == Command.RIGHT:
-            self.ruotaDestraUscita()
+            hxmove.ruota_destra_uscita()
         self.old_cmd = Command.DEFAULT
 
     def control_movement(self, command, move):
