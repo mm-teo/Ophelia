@@ -1,22 +1,21 @@
 # Ophelia
-This project is about a 18DOF Hexapode driven by Raspberry 4 Model B 4GB RAM, 18 MG996r high torque servomotors. I decided to adopt a ROS environment because in the future it could become a bigger project without painfull or impossible modify.
+This project is about a 18DOF Hexapode driven by Raspberry 4 Model B 4GB RAM, 18 MG996r high torque servomotors.
 
-# Build
-```
-cd ophelia
-catkin_make
-```
+Remember to use python2 (pip2) if not the default of the system.
 
 ## Dependencies
 
 Install with pip the package:
 
-`pip install pynput`
+`pip install pynput pybind11`
+
+# Build
+`catkin_make`
 
 # Run
-Before starting the program (with bash):
+Before starting the program (e.g. with bash):
 
-`source ophelia/devel/setup.bash`
+`source devel/setup.bash`
 
 Start the program:
 
