@@ -45,8 +45,11 @@ add_library(hexamove SHARED
 set_target_properties(hexamove PROPERTIES VERSION 1.1)
 set_target_properties(hexamove PROPERTIES SOVERSION 1)
 
-file(GLOB OLD_SO ${CMAKE_CURRENT_SOURCE_DIR}/scripts/hexamove.so*)
-file(REMOVE ${OLD_SO})
+file(GLOB OLD_SO ${CMAKE_CURRENT_SOURCE_DIR}/scripts/hexamove*.so*)
+if (OLD_SO)
+  file(REMOVE ${OLD_SO})
+endif()
+
 set_target_properties(hexamove
   PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/scripts
