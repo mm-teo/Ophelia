@@ -46,7 +46,7 @@ class CerebellumState:
                 rospy.loginfo('Obstacle: no way to proceed')
 
     def set_obstacle(self, obstacled):
-        self.obstacled = obstacled
+        self.obstacled = obstacled.data
 
     def set_goal_reached(self, goal_reached):
         self.goal_reached = goal_reached
@@ -66,7 +66,6 @@ class CerebellumState:
                 rospy.logerr('!!!!!Totally losing odometry. Go slower!!!!!')
             elif self.odom_quality <= 250:
                 rospy.logwarn('Low odometry. Go slower!')
-
             if self.auto_move and not self.obstacled and not self.goal_reached:
                 if self.odom_quality > 250:
                     self.update_direction()
@@ -74,14 +73,27 @@ class CerebellumState:
                 rospy.loginfo('!!!Arrived!!!')
                 self.set_next_pose(None)
                 self.set_goal_reached(False)
-            elif self.obstacled:
-                rospy.loginfo('Obstacle: no way to proceed')
+            # elif self.obstacled:
+            #     rospy.loginfo('Obstacle: no way to proceed')
 
             self.rate.sleep()
 
     def update_direction(self):
-        next_yaw = to_euler(self.next_pose.orientation)[2]
-        current_yaw = to_euler(self.current_pose.orientation)[2]
+        next_yaw = to_euler([self.next_pose.orientation.x,
+                             self.next_pose.orientation.y,
+                             self.next_pose.orientation.z,
+                             self.next_pose.orientation.w])[2]
+        current_yaw = to_euler([self.current_pose.orientation.x,
+                                self.current_pose.orientation.y,
+                                self.current_pose.orientation.z,
+                                self.current_pose.orientation.w])[2]
+
+        print("*************************** ",next_yaw - current_yaw)
+        print("*************************** ",self.next_pose.position.x)
+        print("*************************** ",self.current_pose.position.x)
+        print("*************************** ",self.next_pose.position.y - self.current_pose.position.y)
+        print("*************************** ",self.next_pose.position.z - self.current_pose.position.z)
+
 
         if next_yaw - current_yaw > pi/6:
             rospy.loginfo('Right rotation')
