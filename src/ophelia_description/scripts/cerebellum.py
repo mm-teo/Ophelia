@@ -88,13 +88,6 @@ class CerebellumState:
                                 self.current_pose.orientation.z,
                                 self.current_pose.orientation.w])[2]
 
-        print("*************************** ",next_yaw - current_yaw)
-        print("*************************** ",self.next_pose.position.x)
-        print("*************************** ",self.current_pose.position.x)
-        print("*************************** ",self.next_pose.position.y - self.current_pose.position.y)
-        print("*************************** ",self.next_pose.position.z - self.current_pose.position.z)
-
-
         if next_yaw - current_yaw > pi/6:
             rospy.loginfo('Right rotation')
             discrete_mov.publish(Command.RIGHT.value)
