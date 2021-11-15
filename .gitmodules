@@ -1,0 +1,3 @@
+[submodule "src/syropod_highlevel_controller"]
+	path = src/syropod_highlevel_controller
+	url = https://github.com/csiro-robotics/syropod_highlevel_controller.git
