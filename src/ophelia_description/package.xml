@@ -22,6 +22,10 @@ for ophelia_description robot</p>
 
   <build_depend>python-pybind11</build_depend>  
   <exec_depend>python-pybind11</exec_depend> 
+
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+
   <export>
     <architecture_independent />
   </export>

@@ -22,15 +22,22 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_msgs
+  message_generation
 )
 
 find_package(pybind11 CONFIG REQUIRED)
 
+add_message_files(
+  FILES
+  LegPos.msg
+)
+
 ################################################################################
 # Declare catkin specific configuration to be passed to dependent projects
 ################################################################################
+generate_messages(DEPENDENCIES std_msgs)
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs message_runtime
 )
 
 ################################################################################
