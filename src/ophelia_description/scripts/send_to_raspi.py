@@ -27,7 +27,7 @@ class Servos:
 
 def main():
     rospy.init_node(name='send_to_raspi')
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(25)
     servos = Servos(rospy)
 
     rospy.Subscriber(name='/shc/AL/state',

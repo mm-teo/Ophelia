@@ -1,19 +1,22 @@
+import sys
+import yaml
 import rospy
 from adafruit_servokit import ServoKit
-from random.msg import LegPos
+from ophelia_description.msg import LegPos
 
 
 right = ServoKit(channels=16, address=0x40)
 left = ServoKit(channels=16, address=0x41)
+offsets = None
 
 
-def set_left_arm(self, indexes, values):
+def set_left_arm(indexes, values):
     left.servo[indexes[0]].angle = values[0]
     left.servo[indexes[1]].angle = values[1]
     left.servo[indexes[2]].angle = values[2]
 
 
-def set_right_arm(self, indexes, values):
+def set_right_arm(indexes, values):
     right.servo[indexes[0]].angle = values[0]
     right.servo[indexes[1]].angle = values[1]
     right.servo[indexes[2]].angle = values[2]
@@ -21,32 +24,42 @@ def set_right_arm(self, indexes, values):
 
 def set_joints(msg):
     leg_name = msg.legName
-    leg_state = [msg.coxa, msg.femur, msg.tibia]
     if leg_name[1] == 'L':
+        leg_state = [msg.coxa, msg.femur, -msg.tibia]
         if leg_name[0] == 'A':
-            set_left_arm(indexes=[13, 14, 15], values=leg_state)
+            indexes = [13, 14, 15]
         elif leg_name[0] == 'B':
-            set_left_arm(indexes=[5, 6, 7], values=leg_state)
+            indexes = [5, 6, 7]
         elif leg_name[0] == 'C':
-            set_left_arm(indexes=[2, 1, 0], values=leg_state)
+            indexes = [2, 1, 0]
     elif leg_name[1] == 'R':
+        leg_state = [msg.coxa, -msg.femur, msg.tibia]
         if leg_name[0] == 'A':
-            set_right_arm(indexes=[13, 14, 15], values=leg_state)
+            indexes = [2, 1, 0]
         elif leg_name[0] == 'B':
-            set_right_arm(indexes=[5, 6, 7], values=leg_state)
+            indexes = [5, 6, 7]
         elif leg_name[0] == 'C':
-            set_right_arm(indexes=[2, 1, 0], values=leg_state)
+            indexes = [13, 14, 15]
+
+    leg_state = [x + y for x, y in zip(leg_state, offsets[leg_name])]
+    set_left_arm(indexes=indexes, values=leg_state)
 
 
 def main():
     rospy.init_node(name='send_to_adafruit')
+    with open('offset.yaml', 'r') as f:
+        try:
+            offsets = yaml.safe_load(f)
+        except yaml.YAMLError:
+            rospy.logerr('Error parsing')
+            sys.exit(1)
+
     rate = rospy.Rate(20)
-    servos = Servos(rospy)
 
     rospy.Subscriber(name='/raspi_command',
                      data_class=LegPos,
                      callback=set_joints,
-                     queue_size=10)
+                     queue_size=5)
 
     rospy.spin()
 
