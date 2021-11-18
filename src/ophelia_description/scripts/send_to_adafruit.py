@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import yaml
 import rospy
@@ -32,7 +34,10 @@ def set_joints(msg):
             indexes = [5, 6, 7]
         elif leg_name[0] == 'C':
             indexes = [2, 1, 0]
-    elif leg_name[1] == 'R':
+
+        leg_state = [x + y for x, y in zip(leg_state, offsets[leg_name])]
+        set_left_arm(indexes=indexes, values=leg_state)
+   elif leg_name[1] == 'R':
         leg_state = [msg.coxa, -msg.femur, msg.tibia]
         if leg_name[0] == 'A':
             indexes = [2, 1, 0]
@@ -41,11 +46,12 @@ def set_joints(msg):
         elif leg_name[0] == 'C':
             indexes = [13, 14, 15]
 
-    leg_state = [x + y for x, y in zip(leg_state, offsets[leg_name])]
-    set_left_arm(indexes=indexes, values=leg_state)
+        leg_state = [x + y for x, y in zip(leg_state, offsets[leg_name])]
+        set_right_arm(indexes=indexes, values=leg_state)
 
 
 def main():
+    global offsets
     rospy.init_node(name='send_to_adafruit')
     with open('offset.yaml', 'r') as f:
         try:
