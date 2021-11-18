@@ -1,0 +1,244 @@
+########################################################################################################################
+# Syropod 'FrankenX' Parameters
+########################################################################################################################
+syropod:
+  parameters:
+########################################################################################################################
+    # Control parameters
+    #Value used in setting ros loop frequency which denotes time period between cycles.
+    time_delta: 0.01 #inizialmente 0.02
+    manual_posing: true
+    auto_posing: false
+    rough_terrain_mode: false
+    admittance_control: false
+    inclination_posing: false #requires imu inertia
+    imu_posing: false #requires imu inertia
+########################################################################################################################
+    # Hardware interface parameters
+    individual_control_interface: true  #Use for Gazebo or 'Dynamixel Controller' (OLD)
+    combined_control_interface:   false #Use for 'Dynamixel Interface' (NEW)
+########################################################################################################################
+    # Model parameters
+    syropod_type: frankenX
+    leg_id: [AR, BR, CR, CL, BL, AL] # leg_id_name (clockwise from front right leg)
+    joint_id: [coxa, femur, tibia] # joint_id_name
+    link_id: [base, coxa, femur, tibia] # link_id_name (always start with base) 
+    leg_DOF: {AR: 3, BR: 3, CR: 3, CL: 3, BL: 3, AL: 3} # leg_id_name: degrees_of_freedom (num joints) 
+
+    # Joint parameters:
+    #1.134=65°
+    AR_coxa_joint_parameters:  {offset: 0.0, min: -0.785, max: 0.785, packed: 0,  unpacked: 0.0,   max_vel: 10}
+    AR_femur_joint_parameters: {offset: 0.0, min: -1.57,  max: 1.57,  packed: 0,   unpacked: 1.34,  max_vel: 10}
+    AR_tibia_joint_parameters: {offset: 0.0, min: -2.355, max: -0.1,  packed: 0,    unpacked: -1.87, max_vel: 10}
+
+    BR_coxa_joint_parameters:  {offset: 0.0, min: -0.785, max: 0.785, packed: 0,   unpacked: 0.0,   max_vel: 10}
+    BR_femur_joint_parameters: {offset: 0.0, min: -1.57,  max: 1.57,  packed: 0,   unpacked: 1.34,  max_vel: 10}
+    BR_tibia_joint_parameters: {offset: 0.0, min: -2.355, max: -0.1,  packed: 0,    unpacked: -1.87, max_vel: 10}
+
+    CR_coxa_joint_parameters:  {offset: 0.0, min: -0.785, max: 0.785, packed: 0, unpacked: 0.0,   max_vel: 10}
+    CR_femur_joint_parameters: {offset: 0.0, min: -1.57,  max: 1.57,  packed: 0,   unpacked: 1.34,  max_vel: 10}
+    CR_tibia_joint_parameters: {offset: 0.0, min: -2.355, max: -0.1,  packed: 0,    unpacked: -1.87, max_vel: 10}
+
+    CL_coxa_joint_parameters:  {offset: 0.0, min: -0.785, max: 0.785, packed: 0,  unpacked: 0.0,   max_vel: 10}
+    CL_femur_joint_parameters: {offset: 0.0, min: -1.57,  max: 1.57,  packed: 0,   unpacked: 1.34,  max_vel: 10}
+    CL_tibia_joint_parameters: {offset: 0.0, min: -2.355, max: -0.1,  packed: 0,    unpacked: -1.87, max_vel: 10}
+
+    BL_coxa_joint_parameters:  {offset: 0.0, min: -0.785, max: 0.785, packed: 0,  unpacked: 0.0,   max_vel: 10}
+    BL_femur_joint_parameters: {offset: 0.0, min: -1.57,  max: 1.57,  packed: 0,   unpacked: 1.34,  max_vel: 10}
+    BL_tibia_joint_parameters: {offset: 0.0, min: -2.355, max: -0.1,  packed: 0,    unpacked: -1.87, max_vel: 10}
+
+    AL_coxa_joint_parameters:  {offset: 0.0, min: -0.785, max: 0.785, packed: 0, unpacked: 0.0,   max_vel: 10}
+    AL_femur_joint_parameters: {offset: 0.0, min: -1.57,  max: 1.57,  packed: 0,   unpacked: 1.34,  max_vel: 10}
+    AL_tibia_joint_parameters: {offset: 0.0, min: -2.355, max: -0.1,  packed: 0,    unpacked: -1.87, max_vel: 10}
+
+    # Link DH parameters: en.wikipedia.org/wiki/Denavit–Hartenberg_parameters 
+    # Ensure theta values are within joint limits
+    AR_base_link_parameters:  {d: 0.0, theta: -0.54,  r: 0.1067,  alpha: 0.0}  #ok
+    AR_coxa_link_parameters:  {d: 0.0, theta: -0.245, r: 0.0498, alpha: 1.57}
+    AR_femur_link_parameters: {d: 0.0, theta: 0.0,    r: 0.0762, alpha: 0.0}
+    AR_tibia_link_parameters: {d: 0.0, theta: 0.0,    r: 0.1364, alpha: 0.0}
+
+    BR_base_link_parameters:  {d: 0.0, theta: -1.57,  r: 0.0671,  alpha: 0.0}   #ok
+    BR_coxa_link_parameters:  {d: 0.0, theta: 0.0,    r: 0.0498, alpha: 1.57}
+    BR_femur_link_parameters: {d: 0.0, theta: 0.0,    r: 0.0762, alpha: 0.0}
+    BR_tibia_link_parameters: {d: 0.0, theta: 0.0,    r: 0.1364, alpha: 0.0}
+
+    CR_base_link_parameters:  {d: 0.0, theta: -2.6,   r: 0.1067,  alpha: 0.0}   #ok
+    CR_coxa_link_parameters:  {d: 0.0, theta: 0.245,  r: 0.0498, alpha: 1.57}
+    CR_femur_link_parameters: {d: 0.0, theta: 0.0,    r: 0.0762, alpha: 0.0}
+    CR_tibia_link_parameters: {d: 0.0, theta: 0.0,    r: 0.1364, alpha: 0.0}
+
+    AL_base_link_parameters:  {d: 0.0, theta: 0.54,   r: 0.1067,  alpha: 0.0}
+    AL_coxa_link_parameters:  {d: 0.0, theta: 0.245,  r: 0.0498, alpha: 1.57}
+    AL_femur_link_parameters: {d: 0.0, theta: 0.0,    r: 0.0762, alpha: 0.0}
+    AL_tibia_link_parameters: {d: 0.0, theta: 0.0,    r: 0.1364, alpha: 0.0}
+
+    BL_base_link_parameters:  {d: 0.0, theta: 1.57,   r: 0.0671,  alpha: 0.0}   #ok
+    BL_coxa_link_parameters:  {d: 0.0, theta: 0.0,    r: 0.0498, alpha: 1.57}
+    BL_femur_link_parameters: {d: 0.0, theta: 0.0,    r: 0.0762, alpha: 0.0}
+    BL_tibia_link_parameters: {d: 0.0, theta: 0.0,    r: 0.1364, alpha: 0.0}
+
+    CL_base_link_parameters:  {d: 0.0, theta: 2.6,    r: 0.1067,  alpha: 0.0}   #ok 
+    CL_coxa_link_parameters:  {d: 0.0, theta: -0.245, r: 0.0498, alpha: 1.57}
+    CL_femur_link_parameters: {d: 0.0, theta: 0.0,    r: 0.0762, alpha: 0.0}
+    CL_tibia_link_parameters: {d: 0.0, theta: 0.0,    r: 0.1364, alpha: 0.0}
+
+    clamp_joint_positions: true
+    clamp_joint_velocities: false
+    ignore_IK_warnings: false
+
+########################################################################################################################
+    # Walker parameters
+    gait_type: tripod_gait
+    body_clearance:       0.15
+    step_frequency: {default: 1.0, min: 0.001, max: 10, step: 0.1} #Reconfigurable
+    swing_height:         {default:  0.060, min:  0.010, max:  0.180, step:  0.010} #Reconfigurable
+    swing_width:          {default:  0.000, min: -0.300, max:  0.300, step:  0.010} #Reconfigurable
+    step_depth:           {default:  0.000, min:  0.000, max:  0.000, step:  0.000} #Reconfigurable
+    stance_span_modifier: {default:  0.000, min: -1.000, max:  1.000, step:  0.100} #Reconfigurable
+
+    velocity_input_mode:        throttle #real
+    body_velocity_scaler:       1.0
+    force_cruise_velocity:      true
+    linear_cruise_velocity:     {x: 1, y: 0.0}
+    angular_cruise_velocity:    0.0
+    cruise_control_time_limit: 0.0
+
+    #x=135.0
+    #y=0.0
+    AR_stance_position: {x:  0.135, y: -0.110}
+    BR_stance_position: {x:  0.0, y: -0.155}
+    CR_stance_position: {x: -0.135, y: -0.110}
+    CL_stance_position: {x: -0.135, y:  0.110}
+    BL_stance_position: {x:  0.0, y:  0.155}
+    AL_stance_position: {x:  0.135, y:  0.110}
+
+    overlapping_walkspaces: false
+    force_normal_touchdown: false
+    gravity_aligned_tips:   false
+    touchdown_threshold:    0.9
+    liftoff_threshold:      0.1
+
+########################################################################################################################
+    # Poser parameters
+    auto_pose_type:             auto
+    start_up_sequence:          true
+    time_to_start:              5.0
+    rotation_pid_gains:         {p: 0.0, i: 0.0, d: 0.0}
+    max_translation:            {x: 0.04, y: 0.05, z: 0.08}
+    max_rotation:               {roll: 0.2, pitch: 0.2, yaw: 0.3}
+    max_translation_velocity:   0.2
+    max_rotation_velocity:      0.5
+    leg_manipulation_mode:      tip_control
+
+########################################################################################################################
+    # Impedance controller parameters
+    dynamic_stiffness:      true
+    use_joint_effort:       true
+    integrator_step_time:   0.06
+    virtual_mass:           {default: 6.0, min: 1, max: 100, step: 5} #Reconfigurable
+    virtual_stiffness:      {default: 20.0, min: 1, max: 50, step: 5} #Reconfigurable
+    virtual_damping_ratio:  {default: 2.5, min: 0.1, max: 100.0, step: 0.05} #Reconfigurable
+    force_gain:             {default: 0.5, min: 0.001, max: 100, step: 1.0} #Reconfigurable
+    load_stiffness_scaler:  10
+    swing_stiffness_scaler: 0.1
+
+
+########################################################################################################################
+    # Debug parameters
+    console_verbosity:            debug
+    debug_move_to_joint_position: false
+    debug_step_to_position:       false
+    debug_swing_trajectory:       false
+    debug_stance_trajectory:      false
+    debug_execute_sequence:       false
+    debug_workspace_calculations: false
+    debug_ik:                     false
+    debug_rviz:                   true
+
+
+########################################################################################################################
+
+old_parameters:
+
+######################################################################
+
+  auto_pose_compensation:
+    pitch_amplitude: 0.02
+    roll_amplitude: 0.015
+    z_trans_amplitude: 0.05
+
+  manual_pose_compensation:
+    max_pose_time: 1.0
+    max_translation: [0.07, 0.07, 0.04]
+    max_rotation: [0.09, 0.08, 0.075] #[-0.09, 0.08, 0.075]
+    max_translation_velocity: 0.15
+    max_rotation_velocity: 0.2
+    
+  packed_joint_positions:
+    AL_packed_joint_positions: [1.57, 1.57, -1.2]
+    AR_packed_joint_positions: [1.57, 1.57, -1.2]
+    BL_packed_joint_positions: [1.57, 1.57, -1.2]
+    BR_packed_joint_positions: [1.57, 1.57, -1.2]
+    CL_packed_joint_positions: [-1.57, 1.57, -1.2]
+    CR_packed_joint_positions: [-1.57, 1.57, -1.1] #For mounted Revo
+
+  unpacked_joint_positions_intermediate:
+    AL_unpacked_joint_positions_intermediate: [1.57, 1.57, 0.0]  #CONFIRM VALUES BEFORE USE
+    AR_unpacked_joint_positions_intermediate: [1.57, 1.57, 0.0]  #CONFIRM VALUES BEFORE USE
+    BL_unpacked_joint_positions_intermediate: [1.57, 1.57, 0.0]   #CONFIRM VALUES BEFORE USE
+    BR_unpacked_joint_positions_intermediate: [1.57, 1.57, 0.0]   #CONFIRM VALUES BEFORE USE
+    CL_unpacked_joint_positions_intermediate: [-1.57, 1.57, 0.0] #CONFIRM VALUES BEFORE USE
+    CR_unpacked_joint_positions_intermediate: [-1.57, 1.57, 0.0] #CONFIRM VALUES BEFORE USE   
+
+  unpacked_joint_positions:
+    AL_unpacked_joint_positions: [0.785, 0.785, 0.785]
+    AR_unpacked_joint_positions: [0.785, 0.785, 0.785]
+    BL_unpacked_joint_positions: [0.0, 0.785, 0.785]
+    BR_unpacked_joint_positions: [0.0, 0.785, 0.785]
+    CL_unpacked_joint_positions: [-0.785, 0.785, 0.785]
+    CR_unpacked_joint_positions: [-0.785, 0.785, 0.785]
+
+######################################################################
+# Impedance Controller Parameters
+######################################################################
+
+  impedance_controller:
+    impedance_control: true
+    dynamic_stiffness: true # Needs more testing
+    stiffness_multiplier: 10.0
+    #impedance_input: "tip_force" #Used with mass-spring-damper model
+    impedance_input: "joint_effort" #Used with force_gain (single motor feedback)
+    integrator_step_time: 0.03
+    virtual_mass: 10.0
+    virtual_stiffness: 12.0 #8.0
+    virtual_damping_ratio: 0.8
+    force_gain: 2.0 # can't use normal mx64 calibration value
+    calibration_gain_mx28: 5.6168 # For Gazebo use 1 and for real robot 5.6168
+    calibration_gain_mx64: 15.6882 # For Gazebo use 1 and for real robot 15.6882
+
+    stride_height_control: false # impedance_control must be true to activate stride height control
+    force_treshold_value: 10 #1.2 # Force greater than treshold increments the stride height
+    increment_step_clearance: 0.1 # Stride height increment
+    max_step_clearance: 0.8 # Maximum value of stride height
+    time_interval: 20 # If no force is detect the stride height decreases after time_interval (in seconds)
+
+######################################################################
+# Adaptive Impedance Controller Parameters of leg tip
+######################################################################
+
+  adaptive_impedance_controller:
+    adaptive_impedance_control: false
+    min_stiffness: 8.5
+    max_stiffness: 800
+    low_pass_gain_stiffness: 0.7
+    min_step_frequency: 0.1
+    max_step_frequency: 0.8
+    min_step_height: 0.1
+    max_step_height: 0.4
+    correlation_a: 800
+    correlation_b: -2610.917
+    correlation_c: 2903.508
+    correlation_d: -1084.092
+
+######################################################################
