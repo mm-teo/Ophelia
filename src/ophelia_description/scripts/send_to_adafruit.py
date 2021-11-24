@@ -53,7 +53,7 @@ def set_joints(msg):
 def main():
     global offsets
     rospy.init_node(name='send_to_adafruit')
-    with open('offset.yaml', 'r') as f:
+    with open(sys.argv[1], 'r') as f:
         try:
             offsets = yaml.safe_load(f)
         except yaml.YAMLError:
