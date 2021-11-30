@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 from math import degrees
 import rospy
@@ -7,7 +7,7 @@ from syropod_highlevel_controller.msg import LegState
 
 
 class Servos:
-    __slots = 'pub'
+    __slots__ = 'pub'
 
     def __init__(self, rospy):
         self.pub = rospy.Publisher(name='raspi_command',

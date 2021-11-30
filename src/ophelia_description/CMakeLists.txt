@@ -11,21 +11,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 ################################################################################
 # Find catkin packages and libraries for catkin and system dependencies
 ################################################################################
-execute_process(
-  COMMAND "${PYTHON_EXECUTABLE}" -m pybind11 --cmakedir
-  OUTPUT_VARIABLE _tmp_dir
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
-
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_msgs
   message_generation
 )
-
-find_package(pybind11 CONFIG REQUIRED)
 
 add_message_files(
   FILES
@@ -44,26 +35,3 @@ catkin_package(
 # Build
 ################################################################################
 include_directories(${catkin_INCLUDE_DIRS})
-
-add_library(hexamove SHARED
-  src/HexaMove.cpp
-)
-
-set_target_properties(hexamove PROPERTIES VERSION 1.1)
-set_target_properties(hexamove PROPERTIES SOVERSION 1)
-
-file(GLOB OLD_SO ${CMAKE_CURRENT_SOURCE_DIR}/scripts/hexamove*.so*)
-if (OLD_SO)
-  file(REMOVE ${OLD_SO})
-endif()
-
-set_target_properties(hexamove
-  PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/scripts
-)
-
-target_link_libraries(hexamove ${catkin_LIBRARIES})
-target_link_libraries(hexamove pybind11::module pybind11::lto)
-
-pybind11_extension(hexamove)
-pybind11_strip(hexamove)
