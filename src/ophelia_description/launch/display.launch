@@ -12,7 +12,10 @@
   <node name="send_to_raspi" pkg="ophelia_description" type="send_to_raspi.py" output="screen" />
 
   <include file="$(find ophelia_syropod)/launch/ophelia_highlevel.launch" />
-
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="align_depth" value="true" />
+  </include>
+  
   <!--<group>
     <machine name="hw_controller" address="192.168.43.81" user="pi" password="ophelia" env-loader="/home/pi/hw_control/devel/env.sh" default="true" />
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
