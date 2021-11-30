@@ -7,7 +7,7 @@ Remember to use python2 (pip2) if not the default of the system.
 
 Install with pip the package:
 
-`pip install pynput pybind11`
+`pip install pynput`
 
 # Build
 `catkin_make`
