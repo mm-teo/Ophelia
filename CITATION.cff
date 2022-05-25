@@ -3,5 +3,6 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: Monfrini
     given-names: Matteo
-
+    orcid: https://github.com/mm-teo/Ophelia
+title: "Ophelia 18DOF Hexapod"
 date-released: 2022-04-11
