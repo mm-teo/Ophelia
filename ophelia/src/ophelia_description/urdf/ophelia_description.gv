@@ -1,0 +1,59 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"anca_dx_1" [label="anca_dx_1"];
+"femore_dx_1" [label="femore_dx_1"];
+"tibia_dx_1" [label="tibia_dx_1"];
+"anca_dx_2" [label="anca_dx_2"];
+"femore_dx_2" [label="femore_dx_2"];
+"tibia_dx_2" [label="tibia_dx_2"];
+"anca_dx_3" [label="anca_dx_3"];
+"femore_dx_3" [label="femore_dx_3"];
+"tibia_dx_3" [label="tibia_dx_3"];
+"anca_sx_1" [label="anca_sx_1"];
+"femore_sx_1" [label="femore_sx_1"];
+"tibia_sx_1" [label="tibia_sx_1"];
+"anca_sx_2" [label="anca_sx_2"];
+"femore_sx_2" [label="femore_sx_2"];
+"tibia_sx_2" [label="tibia_sx_2"];
+"anca_sx_3" [label="anca_sx_3"];
+"femore_sx_3" [label="femore_sx_3"];
+"tibia_sx_3" [label="tibia_sx_3"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "anca_dx_1_joint" [label="xyz: 0.0627104 0.0863761 0 \nrpy: 0 1.5708 -2.35619"]
+"anca_dx_1_joint" -> "anca_dx_1"
+"anca_dx_1" -> "femore_dx_1_joint" [label="xyz: 0.00133227 0 -0.0498117 \nrpy: 0 -0 1.5708"]
+"femore_dx_1_joint" -> "femore_dx_1"
+"femore_dx_1" -> "tibia_dx_1_joint" [label="xyz: 0 0 -0.0761883 \nrpy: 0 -0 0"]
+"tibia_dx_1_joint" -> "tibia_dx_1"
+"base_link" -> "anca_dx_2_joint" [label="xyz: 0.0670945 0 0 \nrpy: 0 1.5708 -3.14159"]
+"anca_dx_2_joint" -> "anca_dx_2"
+"anca_dx_2" -> "femore_dx_2_joint" [label="xyz: 0.00133227 0 -0.0498117 \nrpy: -3.14159 -0 1.5708"]
+"femore_dx_2_joint" -> "femore_dx_2"
+"femore_dx_2" -> "tibia_dx_2_joint" [label="xyz: 0 0 0.0761883 \nrpy: -3.14159 0 0"]
+"tibia_dx_2_joint" -> "tibia_dx_2"
+"base_link" -> "anca_dx_3_joint" [label="xyz: 0.0626185 -0.0863311 0 \nrpy: 1.5708 -0 0.785398"]
+"anca_dx_3_joint" -> "anca_dx_3"
+"anca_dx_3" -> "femore_dx_3_joint" [label="xyz: 0 0.00117767 0.0498117 \nrpy: 0 -0 3.14159"]
+"femore_dx_3_joint" -> "femore_dx_3"
+"femore_dx_3" -> "tibia_dx_3_joint" [label="xyz: 0 0 0.0761883 \nrpy: -3.14159 0 0"]
+"tibia_dx_3_joint" -> "tibia_dx_3"
+"base_link" -> "anca_sx_1_joint" [label="xyz: -0.0627104 0.0863761 0 \nrpy: 0 -1.5708 0.785398"]
+"anca_sx_1_joint" -> "anca_sx_1"
+"anca_sx_1" -> "femore_sx_1_joint" [label="xyz: -0.00133227 0.0498117 0 \nrpy: 0 -1.5708 -1.5708"]
+"femore_sx_1_joint" -> "femore_sx_1"
+"femore_sx_1" -> "tibia_sx_1_joint" [label="xyz: 0 0 0.0761883 \nrpy: 0 -0 0"]
+"tibia_sx_1_joint" -> "tibia_sx_1"
+"base_link" -> "anca_sx_2_joint" [label="xyz: -0.0670944 0 0 \nrpy: 0 -1.5708 0"]
+"anca_sx_2_joint" -> "anca_sx_2"
+"anca_sx_2" -> "femore_sx_2_joint" [label="xyz: -0.00133227 0 0.0498117 \nrpy: -3.14159 -0 -1.5708"]
+"femore_sx_2_joint" -> "femore_sx_2"
+"femore_sx_2" -> "tibia_sx_2_joint" [label="xyz: 0 0 -0.0761883 \nrpy: 3.14159 -0 0"]
+"tibia_sx_2_joint" -> "tibia_sx_2"
+"base_link" -> "anca_sx_3_joint" [label="xyz: -0.0626184 -0.0863311 0 \nrpy: 0 -1.5708 0.785398"]
+"anca_sx_3_joint" -> "anca_sx_3"
+"anca_sx_3" -> "femore_sx_3_joint" [label="xyz: -0.00133227 0 0.0498117 \nrpy: 0 0 -1.5708"]
+"femore_sx_3_joint" -> "femore_sx_3"
+"femore_sx_3" -> "tibia_sx_3_joint" [label="xyz: 0 0 0.0761883 \nrpy: 0 -0 0"]
+"tibia_sx_3_joint" -> "tibia_sx_3"
+}

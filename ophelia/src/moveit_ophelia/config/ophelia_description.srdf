@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="ophelia_description">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="dx_1">
+        <joint name="anca_dx_1_joint" />
+        <joint name="femore_dx_1_joint" />
+        <joint name="tibia_dx_1_joint" />
+    </group>
+    <group name="dx_2">
+        <joint name="anca_dx_2_joint" />
+        <joint name="femore_dx_2_joint" />
+        <joint name="tibia_dx_2_joint" />
+    </group>
+    <group name="dx_3">
+        <joint name="anca_dx_3_joint" />
+        <joint name="femore_dx_3_joint" />
+        <joint name="tibia_dx_3_joint" />
+    </group>
+    <group name="sx_1">
+        <joint name="femore_sx_1_joint" />
+        <joint name="anca_sx_1_joint" />
+        <joint name="tibia_sx_1_joint" />
+    </group>
+    <group name="sx_2">
+        <joint name="anca_sx_2_joint" />
+        <joint name="femore_sx_2_joint" />
+        <joint name="tibia_sx_2_joint" />
+    </group>
+    <group name="sx_3">
+        <joint name="anca_sx_3_joint" />
+        <joint name="femore_sx_3_joint" />
+        <joint name="tibia_sx_3_joint" />
+    </group>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="ee_dx_1" parent_link="base_link" group="dx_1" />
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="anca_dx_1" link2="anca_dx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="anca_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="anca_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="anca_sx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="anca_dx_1" link2="femore_dx_1" reason="Adjacent" />
+    <disable_collisions link1="anca_dx_1" link2="femore_dx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="femore_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="femore_sx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="tibia_dx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_1" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="anca_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="anca_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="anca_sx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="anca_dx_2" link2="femore_dx_2" reason="Adjacent" />
+    <disable_collisions link1="anca_dx_2" link2="femore_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="femore_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="femore_sx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="tibia_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_2" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="anca_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="anca_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="anca_dx_3" link2="femore_dx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="femore_dx_3" reason="Adjacent" />
+    <disable_collisions link1="anca_dx_3" link2="femore_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="femore_sx_2" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="tibia_dx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="tibia_sx_1" reason="Never" />
+    <disable_collisions link1="anca_dx_3" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="anca_sx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="anca_sx_1" link2="femore_dx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="femore_dx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="femore_sx_1" reason="Adjacent" />
+    <disable_collisions link1="anca_sx_1" link2="femore_sx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="tibia_dx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="tibia_dx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_1" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_2" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="anca_sx_2" link2="femore_dx_1" reason="Never" />
+    <disable_collisions link1="anca_sx_2" link2="femore_dx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_2" link2="femore_dx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_2" link2="femore_sx_2" reason="Adjacent" />
+    <disable_collisions link1="anca_sx_2" link2="tibia_dx_1" reason="Never" />
+    <disable_collisions link1="anca_sx_2" link2="tibia_dx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_2" link2="tibia_dx_3" reason="Never" />
+    <disable_collisions link1="anca_sx_3" link2="base_link" reason="Adjacent" />
+    <disable_collisions link1="anca_sx_3" link2="femore_dx_1" reason="Never" />
+    <disable_collisions link1="anca_sx_3" link2="femore_dx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_3" link2="femore_sx_1" reason="Never" />
+    <disable_collisions link1="anca_sx_3" link2="femore_sx_3" reason="Adjacent" />
+    <disable_collisions link1="anca_sx_3" link2="tibia_dx_1" reason="Never" />
+    <disable_collisions link1="anca_sx_3" link2="tibia_dx_2" reason="Never" />
+    <disable_collisions link1="anca_sx_3" link2="tibia_sx_1" reason="Never" />
+    <disable_collisions link1="base_link" link2="femore_dx_1" reason="Never" />
+    <disable_collisions link1="base_link" link2="femore_dx_3" reason="Never" />
+    <disable_collisions link1="base_link" link2="femore_sx_1" reason="Never" />
+    <disable_collisions link1="base_link" link2="femore_sx_3" reason="Never" />
+    <disable_collisions link1="femore_dx_1" link2="femore_sx_2" reason="Never" />
+    <disable_collisions link1="femore_dx_1" link2="femore_sx_3" reason="Never" />
+    <disable_collisions link1="femore_dx_1" link2="tibia_dx_1" reason="Adjacent" />
+    <disable_collisions link1="femore_dx_1" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="femore_dx_1" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="femore_dx_2" link2="femore_sx_1" reason="Never" />
+    <disable_collisions link1="femore_dx_2" link2="femore_sx_2" reason="Never" />
+    <disable_collisions link1="femore_dx_2" link2="femore_sx_3" reason="Never" />
+    <disable_collisions link1="femore_dx_2" link2="tibia_dx_2" reason="Adjacent" />
+    <disable_collisions link1="femore_dx_2" link2="tibia_sx_1" reason="Never" />
+    <disable_collisions link1="femore_dx_2" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="femore_dx_2" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="femore_dx_3" link2="femore_sx_1" reason="Never" />
+    <disable_collisions link1="femore_dx_3" link2="femore_sx_2" reason="Never" />
+    <disable_collisions link1="femore_dx_3" link2="tibia_dx_3" reason="Adjacent" />
+    <disable_collisions link1="femore_dx_3" link2="tibia_sx_1" reason="Never" />
+    <disable_collisions link1="femore_dx_3" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="femore_sx_1" link2="tibia_dx_2" reason="Never" />
+    <disable_collisions link1="femore_sx_1" link2="tibia_dx_3" reason="Never" />
+    <disable_collisions link1="femore_sx_1" link2="tibia_sx_1" reason="Adjacent" />
+    <disable_collisions link1="femore_sx_2" link2="tibia_dx_1" reason="Never" />
+    <disable_collisions link1="femore_sx_2" link2="tibia_dx_2" reason="Never" />
+    <disable_collisions link1="femore_sx_2" link2="tibia_dx_3" reason="Never" />
+    <disable_collisions link1="femore_sx_2" link2="tibia_sx_2" reason="Adjacent" />
+    <disable_collisions link1="femore_sx_3" link2="tibia_dx_1" reason="Never" />
+    <disable_collisions link1="femore_sx_3" link2="tibia_dx_2" reason="Never" />
+    <disable_collisions link1="femore_sx_3" link2="tibia_sx_3" reason="Adjacent" />
+    <disable_collisions link1="tibia_dx_1" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="tibia_dx_2" link2="tibia_sx_2" reason="Never" />
+    <disable_collisions link1="tibia_dx_2" link2="tibia_sx_3" reason="Never" />
+    <disable_collisions link1="tibia_dx_3" link2="tibia_sx_1" reason="Never" />
+    <disable_collisions link1="tibia_dx_3" link2="tibia_sx_2" reason="Never" />
+</robot>

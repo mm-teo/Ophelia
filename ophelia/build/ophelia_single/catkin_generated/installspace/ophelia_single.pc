@@ -1,0 +1,8 @@
+prefix=/home/teo/ophelia/install
+
+Name: ophelia_single
+Description: Description of ophelia_single
+Version: 0.3.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

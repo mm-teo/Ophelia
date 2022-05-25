@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="ophelia_description" type="ophelia_main.py" name="joint_state_publisher"  output="screen"></node>
+</launch>

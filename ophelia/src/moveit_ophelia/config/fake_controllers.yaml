@@ -1,0 +1,31 @@
+controller_list:
+  - name: fake_dx_1_controller
+    joints:
+      - anca_dx_1_joint
+      - femore_dx_1_joint
+      - tibia_dx_1_joint
+  - name: fake_dx_2_controller
+    joints:
+      - anca_dx_2_joint
+      - femore_dx_2_joint
+      - tibia_dx_2_joint
+  - name: fake_dx_3_controller
+    joints:
+      - anca_dx_3_joint
+      - femore_dx_3_joint
+      - tibia_dx_3_joint
+  - name: fake_sx_1_controller
+    joints:
+      - anca_sx_1_joint
+      - femore_sx_1_joint
+      - tibia_sx_1_joint
+  - name: fake_sx_2_controller
+    joints:
+      - anca_sx_2_joint
+      - femore_sx_2_joint
+      - tibia_sx_2_joint
+  - name: fake_sx_3_controller
+    joints:
+      - anca_sx_3_joint
+      - femore_sx_3_joint
+      - tibia_sx_3_joint

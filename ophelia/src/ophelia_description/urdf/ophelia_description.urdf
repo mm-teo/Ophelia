@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="ophelia_description">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0105219623051945 3.36610586085497E-05 -0.00792468474816551"
+        rpy="0 0 0" />
+      <mass
+        value="0.506895933373967" />
+      <inertia
+        ixx="0.000886555710776579"
+        ixy="1.21372168552929E-07"
+        ixz="-2.91797642566944E-07"
+        iyy="0.000473024685968639"
+        iyz="1.39573200484278E-06"
+        izz="0.00130929850997109" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="anca_dx_1">
+    <inertial>
+      <origin
+        xyz="-0.00323389680675808 0.00346995477748029 -0.0245673530101804"
+        rpy="0 0 0" />
+      <mass
+        value="0.0354716865982115" />
+      <inertia
+        ixx="1.88446736272661E-05"
+        ixy="-1.17107603279209E-06"
+        ixz="4.46169241573661E-06"
+        iyy="1.90433490756641E-05"
+        iyz="4.22453755764313E-06"
+        izz="1.08094288467725E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_dx_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_dx_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="anca_dx_1_joint"
+    type="revolute">
+    <origin
+      xyz="0.0627104221301381 0.0863760934387532 0"
+      rpy="2.35619449 1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="anca_dx_1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="femore_dx_1">
+    <inertial>
+      <origin
+        xyz="-0.0036938835869985 0.000158520879731687 -0.0380942110884576"
+        rpy="0 0 0" />
+      <mass
+        value="0.0445431860265775" />
+      <inertia
+        ixx="4.62592694376746E-05"
+        ixy="-1.3983647288844E-08"
+        ixz="7.12387922750904E-12"
+        iyy="4.22369316397224E-05"
+        iyz="-1.20744154365051E-10"
+        izz="8.29169211957236E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_dx_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_dx_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="femore_dx_1_joint"
+    type="revolute">
+    <origin
+      xyz="0.00133227469142768 0 -0.0498117199622284"
+      rpy="0 0 1.5707963267949" />
+    <parent
+      link="anca_dx_1" />
+    <child
+      link="femore_dx_1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="tibia_dx_1">
+    <inertial>
+      <origin
+        xyz="-0.00193906215400591 -0.0368539506888894 -0.0208600783540478"
+        rpy="0 0 0" />
+      <mass
+        value="0.0396706746474517" />
+      <inertia
+        ixx="4.44874139165086E-05"
+        ixy="-5.94508754212314E-06"
+        ixz="-2.84322745135156E-06"
+        iyy="1.06655287393302E-05"
+        iyz="-7.20208570121036E-06"
+        izz="4.67289695175325E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_dx_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_dx_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tibia_dx_1_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.076188280037771"
+      rpy="0 0 0" />
+    <parent
+      link="femore_dx_1" />
+    <child
+      link="tibia_dx_1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="anca_dx_2">
+    <inertial>
+      <origin
+        xyz="-0.00323375492505733 0.00346731477780764 -0.0245673341981753"
+        rpy="0 0 0" />
+      <mass
+        value="0.0354713544747308" />
+      <inertia
+        ixx="1.88446235559686E-05"
+        ixy="-1.17103284633536E-06"
+        ixz="4.46169969998141E-06"
+        iyy="1.9043316977783E-05"
+        iyz="4.22455506706216E-06"
+        izz="1.08093543583445E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_dx_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_dx_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="anca_dx_2_joint"
+    type="revolute">
+    <origin
+      xyz="0.0670944841734966 0 0"
+      rpy="3.14159265358979 1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="anca_dx_2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="femore_dx_2">
+    <inertial>
+      <origin
+        xyz="-0.003826680116603 0.000158518776920535 0.0380940691143695"
+        rpy="0 0 0" />
+      <mass
+        value="0.0445431666453316" />
+      <inertia
+        ixx="4.62592807267538E-05"
+        ixy="-1.39844533309623E-08"
+        ixz="7.04697296668335E-12"
+        iyy="4.22369439501561E-05"
+        iyz="-1.25831469410063E-10"
+        izz="8.29169800938231E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_dx_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_dx_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="femore_dx_2_joint"
+    type="revolute">
+    <origin
+      xyz="0.00133227469142792 0 -0.0498117199622285"
+      rpy="-3.14159265358979 0 1.5707963267949" />
+    <parent
+      link="anca_dx_2" />
+    <child
+      link="femore_dx_2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="tibia_dx_2">
+    <inertial>
+      <origin
+        xyz="-0.00220200107185856 -0.0368528297653786 -0.0208603907506469"
+        rpy="0 0 0" />
+      <mass
+        value="0.0396699268755547" />
+      <inertia
+        ixx="4.44843989609696E-05"
+        ixy="-5.94509274385494E-06"
+        ixz="-2.84335337869824E-06"
+        iyy="1.06651179434915E-05"
+        iyz="-7.2021085417293E-06"
+        izz="4.67258663954593E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_dx_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_dx_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tibia_dx_2_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0.076188280037771"
+      rpy="-3.14159265358979 0 0" />
+    <parent
+      link="femore_dx_2" />
+    <child
+      link="tibia_dx_2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="anca_dx_3">
+    <inertial>
+      <origin
+        xyz="-0.00456626132940545 0.00464759531970847 0.0252443543785638"
+        rpy="0 0 0" />
+      <mass
+        value="0.0354720709707642" />
+      <inertia
+        ixx="1.88447400544191E-05"
+        ixy="-1.17110060619489E-06"
+        ixz="4.46168951305117E-06"
+        iyy="1.90433540348176E-05"
+        iyz="4.22455273155874E-06"
+        izz="1.08095244536224E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_dx_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_dx_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="anca_dx_3_joint"
+    type="revolute">
+    <origin
+      xyz="0.0626184982485877 -0.0863310541319508 0"
+      rpy="1.5707963267949 0 0.785398163397448" />
+    <parent
+      link="base_link" />
+    <child
+      link="anca_dx_3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="femore_dx_3">
+    <inertial>
+      <origin
+        xyz="-0.00131393850337766 0.000158520879733592 0.0380940689493133"
+        rpy="0 0 0" />
+      <mass
+        value="0.0445431860265776" />
+      <inertia
+        ixx="4.62592694376746E-05"
+        ixy="-1.39836472888413E-08"
+        ixz="7.12387927449193E-12"
+        iyy="4.22369316397224E-05"
+        iyz="-1.20744154360823E-10"
+        izz="8.29169211957237E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_dx_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_dx_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="femore_dx_3_joint"
+    type="revolute">
+    <origin
+      xyz="0 0.00117767039219315 0.0498117199622282"
+      rpy="0 0 3.14159265358979" />
+    <parent
+      link="anca_dx_3" />
+    <child
+      link="femore_dx_3" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="tibia_dx_3">
+    <inertial>
+      <origin
+        xyz="0.000310882929613454 -0.0368539506888887 -0.020860078354048"
+        rpy="0 0 0" />
+      <mass
+        value="0.0396706746474524" />
+      <inertia
+        ixx="4.44874139165106E-05"
+        ixy="-5.94508754212299E-06"
+        ixz="-2.84322745135158E-06"
+        iyy="1.06655287393303E-05"
+        iyz="-7.20208570121041E-06"
+        izz="4.67289695175346E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_dx_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_dx_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tibia_dx_3_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0.0761882800377711"
+      rpy="-3.14159265358979 0 0" />
+    <parent
+      link="femore_dx_3" />
+    <child
+      link="tibia_dx_3" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="anca_sx_1">
+    <inertial>
+      <origin
+        xyz="0.00323388809338964 0.0245673629086991 0.00347137237425802"
+        rpy="0 0 0" />
+      <mass
+        value="0.0354719515904127" />
+      <inertia
+        ixx="1.88446870349286E-05"
+        ixy="4.4616701946574E-06"
+        ixz="1.17110676805881E-06"
+        iyy="1.08094777683374E-05"
+        iyz="-4.22454617414555E-06"
+        izz="1.90433568045106E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_sx_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_sx_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="anca_sx_1_joint"
+    type="revolute">
+    <origin
+      xyz="-0.0627103502216307 0.0863760934387502 0"
+      rpy="0.7853981634 -1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="anca_sx_1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="femore_sx_1">
+    <inertial>
+      <origin
+        xyz="-0.00382388358699876 0.000158520879732488 0.0380940689493132"
+        rpy="0 0 0" />
+      <mass
+        value="0.0445431860265776" />
+      <inertia
+        ixx="4.62592694376745E-05"
+        ixy="-1.39836472888559E-08"
+        ixz="7.12387924955934E-12"
+        iyy="4.22369316397223E-05"
+        iyz="-1.20744154381678E-10"
+        izz="8.29169211957234E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_sx_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_sx_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="femore_sx_1_joint"
+    type="revolute">
+    <origin
+      xyz="-0.00133227469142714 0.0498117199622285 0"
+      rpy="0 -1.57079631189374 -1.5707963267949" />
+    <parent
+      link="anca_sx_1" />
+    <child
+      link="femore_sx_1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="tibia_sx_1">
+    <inertial>
+      <origin
+        xyz="-0.00219952390326031 -0.0368542666881217 0.0208595915472915"
+        rpy="0 0 0" />
+      <mass
+        value="0.0396720793184836" />
+      <inertia
+        ixx="4.44913551110852E-05"
+        ixy="-5.94478253100603E-06"
+        ixz="2.84319886361952E-06"
+        iyy="1.06656404965699E-05"
+        iyz="7.20236824568953E-06"
+        izz="4.67325828802255E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_sx_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_sx_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tibia_sx_1_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0.0761882800377709"
+      rpy="0 0 0" />
+    <parent
+      link="femore_sx_1" />
+    <child
+      link="tibia_sx_1" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="anca_sx_2">
+    <inertial>
+      <origin
+        xyz="0.0032337980141169 -0.00346857696436976 0.0245673925915672"
+        rpy="0 0 0" />
+      <mass
+        value="0.0354719064351742" />
+      <inertia
+        ixx="1.88447195235852E-05"
+        ixy="-1.17111873598878E-06"
+        ixz="4.46167873097274E-06"
+        iyy="1.90433326228346E-05"
+        iyz="4.22456521017456E-06"
+        izz="1.08095007608206E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_sx_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_sx_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="anca_sx_2_joint"
+    type="revolute">
+    <origin
+      xyz="-0.0670944122649851 0 0"
+      rpy="0 -1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="anca_sx_2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="femore_sx_2">
+    <inertial>
+      <origin
+        xyz="-0.00369668011659995 0.000158518776920285 -0.0380942109234015"
+        rpy="0 0 0" />
+      <mass
+        value="0.0445431666453314" />
+      <inertia
+        ixx="4.62592807267538E-05"
+        ixy="-1.39844533309663E-08"
+        ixz="7.04697296663618E-12"
+        iyy="4.2236943950156E-05"
+        iyz="-1.25831469420661E-10"
+        izz="8.29169800938229E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_sx_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_sx_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="femore_sx_2_joint"
+    type="revolute">
+    <origin
+      xyz="-0.00133227469142839 0 0.0498117199622285"
+      rpy="-3.14159265358979 0 -1.5707963267949" />
+    <parent
+      link="anca_sx_2" />
+    <child
+      link="femore_sx_2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="tibia_sx_2">
+    <inertial>
+      <origin
+        xyz="-0.00194236641107601 -0.0368514625767511 0.0208598016151444"
+        rpy="0 0 0" />
+      <mass
+        value="0.0396703781244613" />
+      <inertia
+        ixx="4.4488302939806E-05"
+        ixy="-5.94473711705824E-06"
+        ixz="2.84327763352901E-06"
+        iyy="1.06654311142888E-05"
+        iyz="7.20245007776805E-06"
+        izz="4.67294696441966E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_sx_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_sx_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tibia_sx_2_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 -0.076188280037771"
+      rpy="3.14159265358979 0 0" />
+    <parent
+      link="femore_sx_2" />
+    <child
+      link="tibia_sx_2" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="anca_sx_3">
+    <inertial>
+      <origin
+        xyz="0.00323388809338715 -0.00347137237425693 0.0245673629086991"
+        rpy="0 0 0" />
+      <mass
+        value="0.0354719515904128" />
+      <inertia
+        ixx="1.88446870349285E-05"
+        ixy="-1.17110676805874E-06"
+        ixz="4.46167019465748E-06"
+        iyy="1.90433568045108E-05"
+        iyz="4.22454617414534E-06"
+        izz="1.08094777683373E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_sx_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/anca_sx_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="anca_sx_3_joint"
+    type="revolute">
+    <origin
+      xyz="-0.0626184263400723 -0.0863310541319536 0"
+      rpy="0.7853981634 -1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="anca_sx_3" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="femore_sx_3">
+    <inertial>
+      <origin
+        xyz="-0.00382388347149622 0.000158520908407654 0.0380940687062796"
+        rpy="0 0 0" />
+      <mass
+        value="0.0445431857932994" />
+      <inertia
+        ixx="4.62592694308252E-05"
+        ixy="-1.3983642279033E-08"
+        ixz="7.1223654449815E-12"
+        iyy="4.2236931635957E-05"
+        iyz="-1.20746242108502E-10"
+        izz="8.29169210957015E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_sx_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/femore_sx_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="femore_sx_3_joint"
+    type="revolute">
+    <origin
+      xyz="-0.00133227469143045 0 0.0498117199622283"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="anca_sx_3" />
+    <child
+      link="femore_sx_3" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+  <link
+    name="tibia_sx_3">
+    <inertial>
+      <origin
+        xyz="-0.00219909878739107 -0.0368546862956342 0.0208598908984984"
+        rpy="0 0 0" />
+      <mass
+        value="0.0396714881051277" />
+      <inertia
+        ixx="4.44911771294879E-05"
+        ixy="-5.94478832900012E-06"
+        ixz="2.8432111831779E-06"
+        iyy="1.06655091356156E-05"
+        iyz="7.20231251501791E-06"
+        izz="4.67325341432337E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_sx_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.00000040  0.615686275 0.4666666666 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ophelia_description/meshes/tibia_sx_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tibia_sx_3_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0.0761882800377711"
+      rpy="0 0 0" />
+    <parent
+      link="femore_sx_3" />
+    <child
+      link="tibia_sx_3" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="1.4"
+      velocity="6" />
+  </joint>
+</robot>
